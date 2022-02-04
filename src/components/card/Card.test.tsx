@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from "@testing-library/user-event"
-import { Products } from '../models/Products'
-import Card from './Card'
+import { Products } from '../../models/Products'
+import Card from "../card/Card"
 
 describe('card component', () => {
 

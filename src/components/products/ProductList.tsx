@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Products } from "../../models/Products";
 import "./ProductList.css"
-import Card from "../Card"
+import Card from "../card/Card"
 import goggle1 from "../../images/goggles1.jpg"
 import goggle2 from "../../images/goggles2.jpg"
 import goggle3 from "../../images/goggles3.jpg"

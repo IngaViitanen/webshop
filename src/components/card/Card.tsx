@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Products} from "../models/Products"
+import {Products} from "../../models/Products"
 import "./Card.css"
 
 interface Props {
