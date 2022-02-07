@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Products } from "../../models/Products";
 import "./ProductList.css"
 import Card from "../card/Card"
@@ -106,16 +106,48 @@ const data: Products[] = [
 
 const ProductList = () => {
     const [products, setProducts] = useState<Products[]>(data)
+    const [searchVal, setSearchVal] = useState('')
 
+    useEffect( () => {
+        localStorage.setItem('products', JSON.stringify(products))
+    }, [products])
+
+    useEffect( () => {
+        let storage: [] = []
+        const products = localStorage.getItem('products')
+        if (products !== null) {
+            try {
+                storage = JSON.parse(products)
+                console.log(storage)
+                setProducts(storage)
+            } catch (e) { console.log('error') }
+        }
+	}, [])
+    
+    
     return (
     <div>
-        <ul className="product-list">
-            {products.map((product) => (
-                <Card key={product.id} product={product}/>
-            ))}
-        </ul>
+
+        <input type="text" placeholder="Search..." onChange={(e) => setSearchVal(e.target.value)}/> 
+
+        {products.filter((val) => {
+            if (searchVal == ''){
+            return val
+            } else if(val.productName.toLowerCase().includes(searchVal.toLowerCase())){
+            return val
+            }
+        }).map((val) => {
+        return (
+            <ul className="product-list">
+                <Card key={val.id} product={val}/>
+            </ul>
+        )
+        })
+        }
+
     </div>
     )
+
 }
 
 export default ProductList
