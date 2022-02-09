@@ -6,7 +6,7 @@ import Header from './partials/Header';
 function App() {
   return (
     <div className="App">
-      <Header/>
+      <Header id={''} image={''} productName={''} description={''} facts={[]} price={''} quantity={0}/>
       <ProductList/>
     </div>
   );

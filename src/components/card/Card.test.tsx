@@ -20,7 +20,7 @@ describe('card component', () => {
     }
 
     it('does not show details initially', () => {
-        render(<Card product={products}/>)
+        render(<Card product={[products]}/>)
         const item = screen.getAllByRole('listitem')
         expect(item[0]).toBeInTheDocument()
         const details = screen.queryByTestId('details')
@@ -28,7 +28,7 @@ describe('card component', () => {
     }) 
 
     it('show details after clicking an item', () => {
-        render(<Card product={products}/>)
+        render(<Card product={[products]}/>)
         const item = screen.getAllByRole('listitem')
         userEvent.click(item[0])
         const details = screen.queryByTestId('details')

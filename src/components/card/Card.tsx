@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {Products} from "../../models/Products"
 import "./Card.css"
 
 interface Props {
-    product: Products
-    updateCart: (newItem: Products) => void
+    product: Products[]
+    // updateCart: (newItem: Products) => void
 }
 
-const Card = ({product, updateCart}: Props) => {
+const Card = ({product}: Props) => {
     const [showDetails, setShowDetails] = useState(false)
-    const [products, setProducts] = useState([product])
-
-    // useEffect( () => {
-    //     let storage: [] = []
-    //     const products = localStorage.getItem('cart-products')
-    //     if (products !== null) {
-    //         try {
-    //             storage = JSON.parse(products)
-    //             console.log(storage)
-    //             // setProducts(storage)
-    //         } catch (e) { console.log('error') }
-    //     }
-	// }, [])
+    const [products, setProducts] = useState(product)
 
     const addToCart = (product: Products) => {
         storeCart(product)
-        updateCart(product)
+        console.log(storeCart)
+        console.log(product)
     }
 
     const storeCart = (item: Products) => {
@@ -41,17 +30,14 @@ const Card = ({product, updateCart}: Props) => {
                 console.log('Failed to add item to cart')
             }
         } else {
-            localStorage.setItem('cart-products', JSON.stringify(products))
+            localStorage.setItem('cart-products', JSON.stringify(product))
         }
     }
 
-    // useEffect( () => {
-    //     localStorage.setItem('cart-products', JSON.stringify(products))
-    // }, [products])
-
-
     return(
         <div>
+
+            {products.map((product) => (
              <li key={product.id} className="card" onClick={() => setShowDetails(!showDetails)}>
                 <img src={product.image} alt={product.productName} height="160px"/>
                 <div className="card-grid">
@@ -75,8 +61,8 @@ const Card = ({product, updateCart}: Props) => {
                     </div>
                 </div>
                 ) : null}
-
             </li>
+            ))}
         </div>
     )
 }

@@ -143,7 +143,7 @@ const ProductList = () => {
         }).map((val) => {
             return (
                 <ul className="product-list">
-                    <Card key={val.id} product={val} updateCart={() => ''}/>
+                    <Card key={val.id} product={[val]}/>
                 </ul>
             )
         })
