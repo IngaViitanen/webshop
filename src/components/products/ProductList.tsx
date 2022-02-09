@@ -10,6 +10,7 @@ import goggle5 from "../../images/goggles5.jpg"
 import goggle6 from "../../images/goggles6.jpg"
 import goggle7 from "../../images/goggles7.jpg"
 
+
 const data: Products[] = [
     {
         id: 'idid1',
@@ -107,6 +108,7 @@ const data: Products[] = [
 const ProductList = () => {
     const [products, setProducts] = useState<Products[]>(data)
     const [searchVal, setSearchVal] = useState('')
+    const [message, setMessage] = useState('')
 
     useEffect( () => {
         localStorage.setItem('products', JSON.stringify(products))
@@ -123,28 +125,30 @@ const ProductList = () => {
             } catch (e) { console.log('error') }
         }
 	}, [])
-    
+
     
     return (
     <div>
+       
 
         <input type="text" placeholder="Search..." onChange={(e) => setSearchVal(e.target.value)}/> 
 
         {products.filter((val) => {
-            if (searchVal == ''){
-            return val
-            } else if(val.productName.toLowerCase().includes(searchVal.toLowerCase())){
-            return val
+            if (searchVal === ''){
+                return val
+            } 
+            else if(val.productName.toLowerCase().includes(searchVal.toLowerCase())){
+                return val
             }
         }).map((val) => {
-        return (
-            <ul className="product-list">
-                <Card key={val.id} product={val}/>
-            </ul>
-        )
+            return (
+                <ul className="product-list">
+                    <Card key={val.id} product={val} updateCart={() => ''}/>
+                </ul>
+            )
         })
         }
-
+            {/* <p>{message}</p> */}
     </div>
     )
 
