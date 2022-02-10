@@ -6,6 +6,7 @@ const Cart = (products: Products) => {
     const [cart, setCart] = useState(false)
     const [items, setItems] = useState([products])
     const [showCard, setShowCard] = useState(false)
+    const [price, setPrice] = useState(0)
 
     useEffect( () => {
         let storage: [] = []
@@ -18,6 +19,7 @@ const Cart = (products: Products) => {
                     storage = JSON.parse(products)
                     console.log(storage)
                     setItems(storage)
+                    setShowCard(!showCard)
                     console.log(storage) 
                 } catch (e) { console.log('error') }
             }
@@ -31,11 +33,22 @@ const Cart = (products: Products) => {
             {cart ? 
             <div>
                 <h2>Your cart</h2>
-                <ul data-testid="cart-list">
 
-                    <Card product={items}/>
-                
+                <ul data-testid="cart-list">
+                {showCard ? (
+                    <div data-testid="cart">
+                        {items.map(item => (
+                            <li key={item.id}>
+                                <p>{item.productName}</p>
+                                <p>{item.price}</p>
+                            </li>
+                        ))}
+                    </div>
+                )
+                : ''} 
                 </ul>
+
+                <p>Total: {price} kr</p>
             </div>
             : null}
         </div>

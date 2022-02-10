@@ -13,7 +13,7 @@ const Card = ({product}: Props) => {
 
     const addToCart = (product: Products) => {
         storeCart(product)
-        console.log(storeCart)
+        // console.log(storeCart)
         console.log(product)
     }
 
