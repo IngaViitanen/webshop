@@ -4,6 +4,6 @@ export interface Products {
     productName: string
     description: string
     facts: string[]
-    price: string
+    price: number
     quantity: number
 }

@@ -42,7 +42,7 @@ const Card = ({product}: Props) => {
                 <img src={product.image} alt={product.productName} height="160px"/>
                 <div className="card-grid">
                 <p>{product.productName}</p>
-                <p>{product.price}</p>
+                <p>{product.price}:-</p>
                 </div>
 
                 {showDetails ? (

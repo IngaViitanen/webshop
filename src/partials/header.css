@@ -1,0 +1,35 @@
+
+
+header{
+    /* max-width: 1000px; */
+    display: grid;
+    grid-template-columns: 200px 120px;
+    column-gap: 20px;
+    justify-content: space-between;
+}
+
+#logo{
+    margin: 1rem;
+}
+
+.cartButtons{
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+/* #logo{
+    background-image: url("../images/logo.png");
+    height: 32px;
+} */
+
+@media screen and (max-width: 768px) {
+    #logo {
+        height: 22px;
+    }
+
+    .logos{
+        height: 40px;
+    }
+  }

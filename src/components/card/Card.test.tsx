@@ -10,7 +10,7 @@ describe('card component', () => {
         image: '',
         productName: 'Icy Blue',
         description: 'Ski goggles with an icy blue color hue. Perfect for skiing in any weather and great for protecting your eyes from the snow. Ski fast and look amazing!',
-        price: '299:-',
+        price: 299,
         facts: [
                 'Color: Icy Blue',
                 'Size: adjustable',

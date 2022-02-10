@@ -14,7 +14,7 @@ describe('cart component', () => {
         image: '',
         productName: 'Icy Blue',
         description: 'Ski goggles with an icy blue color hue. Perfect for skiing in any weather and great for protecting your eyes from the snow. Ski fast and look amazing!',
-        price: '299:-',
+        price: 299,
         facts: [
                 'Color: Icy Blue',
                 'Size: adjustable',
@@ -30,15 +30,16 @@ describe('cart component', () => {
 
     it('shows the initially empty cart after user clicks on the logo', () => {
         // localStorage.clear
-        render(<Cart id={''} image={''} productName={''} description={''} facts={[]} price={''} quantity={0} />)
-        const button = screen.getByRole('button', {name: 'CART'})
+        render(<Cart id={''} image={''} productName={''} description={''} facts={[]} price={0} quantity={0} />)
+        const button = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
         userEvent.click(button)
         
         const cart = screen.getByText('Your cart')
         expect(cart).toBeInTheDocument()
 
-        const products = screen.queryByRole('listitem')
-        expect(products).not.toBeInTheDocument()
+        const products = screen.getByRole('listitem')
+        const empty = within(products).queryByText('Icy Blue')
+        expect(empty).not.toBeInTheDocument()
     })
 
 
@@ -47,31 +48,14 @@ describe('cart component', () => {
         
 		localStorage.setItem('cart-products', JSON.stringify(value))
 
-        // let x = jest.spyOn(localStorage, 'getItem')
-		// console.log(x)
-		// x.mockImplementation(() => JSON.stringify(value))
-
-        // const setState: any = jest.fn
-        // const useStateSpy: any = jest.spyOn(React, 'useState')
-        // useStateSpy.mockImplementation(init => [init, setState])
-
-        // const setStateMock = jest.fn
-        // const useStateSpy: any = (useState: any) => [() => useState, setStateMock]
-        // jest.spyOn(React, 'useState').mockImplementation(useStateSpy)
-
-        // const setStateMock = jest.fn
-        // const useStateSpy: any = (useState: any) => [() => useState, setStateMock]
-        // jest.spyOn(React, 'useState').mockImplementation(useStateSpy)
-
         render(<ProductList/>)
         render(<Cart id={value.id} image={value.image} productName={value.productName} description={value.description} facts={value.facts} price={value.price} quantity={value.quantity}/>)
         const items = screen.getAllByRole('listitem')
         userEvent.click(items[0])
         const button = screen.getByRole('button', {name: 'Add to cart'})
         userEvent.click(button)
-        // expect(useStateSpy).toHaveBeenCalledWith(true)
 
-        const cartButton = screen.getByRole('button', {name: 'CART'})
+        const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
         userEvent.click(cartButton)
     
         const cart = screen.getByTestId('cart-list')
@@ -83,37 +67,38 @@ describe('cart component', () => {
 
 
     it('shows the total price: 0kr if the cart is empty', () => {
-        render(<Cart id={''} image={''} productName={''} description={''} facts={[]} price={''} quantity={0}/>)
-        const cartButton = screen.getByRole('button', {name: 'CART'})
+        render(<Cart id={''} image={''} productName={''} description={''} facts={[]} price={0} quantity={0}/>)
+        const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
         userEvent.click(cartButton)
 
-        const items = screen.queryByRole('listitem')
-        expect(items).not.toBeInTheDocument()
+        const items = screen.getByRole('listitem')
+        const empty = within(items).queryByText('Icy Blue')
+        expect(empty).not.toBeInTheDocument()
 
         const total = screen.getByText('Total: 0 kr')
         expect(total).toBeInTheDocument()
     })
 
-    // it('shows the total price of products in the cart', () => {
-    //     render(<ProductList/>)
-    //     render(<Cart id={value.id} image={value.image} productName={value.productName} description={value.description} facts={value.facts} price={value.price} quantity={value.quantity}/>)
+    it('shows the total price of products in the cart', () => {
+        render(<ProductList/>)
+        render(<Cart id={value.id} image={value.image} productName={value.productName} description={value.description} facts={value.facts} price={value.price} quantity={value.quantity}/>)
         
-    //     const items = screen.getAllByRole('listitem')
-    //     userEvent.click(items[0])
-    //     const button = screen.getByRole('button', {name: 'Add to cart'})
-    //     userEvent.click(button)
+        const items = screen.getAllByRole('listitem')
+        userEvent.click(items[0])
+        const button = screen.getByRole('button', {name: 'Add to cart'})
+        userEvent.click(button)
 
-    //     const cartButton = screen.getByRole('button', {name: 'CART'})
-    //     userEvent.click(cartButton)
+        const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
+        userEvent.click(cartButton)
 
-    //     const cart = screen.getByTestId('cart-list')
-    //     // const cartItems = within(cart).getByRole('listitem')
-    //     const specs = screen.getByText('Icy Blue')
-    //     expect(specs).toBeInTheDocument()
+        const cart = screen.getByTestId('cart-list')
+        const cartItems = within(cart).getByRole('listitem')
+        const specs = within(cartItems).getByText('Icy Blue')
+        expect(specs).toBeInTheDocument()
 
-    //     const total = screen.getByText('Total: 299 kr')
-    //     expect(total).toBeInTheDocument()
-    // })
+        const total = screen.getByText('Total: 299 kr')
+        expect(total).toBeInTheDocument()
+    })
 
     // it('reduces the quantity of a product after it has been added to cart', () => {
     //     render(<ProductList/>)
