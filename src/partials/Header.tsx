@@ -17,6 +17,7 @@ const Header = (products: Products) => {
 
     return (
         <header>
+            {/* <span></span> */}
             <img id="logo" src={bigLogo} alt="logo made by Inga Viitanen" height="32px"/>
             <Cart id={products.id} image={products.image} productName={products.productName} description={products.description} facts={products.facts} price={products.price} quantity={products.quantity}/>
         </header>

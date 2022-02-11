@@ -131,7 +131,7 @@ const ProductList = () => {
     <div>
        
 
-        <input type="text" placeholder="Search..." onChange={(e) => setSearchVal(e.target.value)}/> 
+        <input id="searchBar" type="text" placeholder="Search..." onChange={(e) => setSearchVal(e.target.value)}/> 
 
         <div className="product-list">
         {products.filter((val) => {

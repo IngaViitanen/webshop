@@ -1,7 +1,5 @@
 
-
 header{
-    /* max-width: 1000px; */
     display: grid;
     grid-template-columns: 200px 120px;
     column-gap: 20px;
@@ -9,27 +7,57 @@ header{
 }
 
 #logo{
-    margin: 1rem;
+    margin: 0.5rem;
 }
 
 .cartButtons{
-    margin: 1rem;
+    margin: 0rem;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
 }
 
-/* #logo{
-    background-image: url("../images/logo.png");
-    height: 32px;
-} */
-
 @media screen and (max-width: 768px) {
+
     #logo {
         height: 22px;
     }
 
     .logos{
-        height: 40px;
+        height: 45px;
     }
   }
+
+  @media screen and (max-width: 490px) {
+
+    .logos{
+        height: 40px;
+    }
+
+      header{
+        display: grid;
+        grid-template-columns: 200px 100px;
+        column-gap: 20px;
+    }
+
+        #logo{
+        margin: 0.4rem;
+        display: grid;
+        justify-self: center;
+    }
+
+    .cartButtons{
+        margin: 0;
+        display: flex;
+        flex-direction: row;
+    }
+  }
+
+  @media screen and (max-width: 325px) {
+
+    
+
+    .logos{
+        height: 38px;
+    }
+}
