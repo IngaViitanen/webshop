@@ -1,6 +1,6 @@
 
 import React, { useContext, useState } from "react";
-// import { MyGlobalContext } from "../../context/Context";
+import { MyGlobalContext } from "../../context/Context";
 import {Products} from "../../models/Products"
 import "./Card.css"
 import Cart from "../Cart"
@@ -13,9 +13,13 @@ interface Props {
 const Card = ({product}: Props) => {
     const [showDetails, setShowDetails] = useState(false)
     const [products, setProduct ]= useState(product)
+    const {cart, setCart} = useContext(MyGlobalContext)
 
     const addToCart = (product: Products) => {
-        // storeCart(product)
+        const newCartArr = [...cart, product]
+        console.log('newCartArr', newCartArr)
+        setCart(newCartArr)
+        storeCart(product)
         // console.log(storeCart)
         console.log(product)
     }
