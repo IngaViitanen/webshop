@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+
+import React, { useContext, useState } from "react";
+// import { MyGlobalContext } from "../../context/Context";
 import {Products} from "../../models/Products"
 import "./Card.css"
+import Cart from "../Cart"
 
 interface Props {
     product: Products[]
-    // updateCart: (newItem: Products) => void
+    // handleCart: (item: Products) => void
 }
 
 const Card = ({product}: Props) => {
     const [showDetails, setShowDetails] = useState(false)
-    const [products, setProducts] = useState(product)
+    const [products, setProduct ]= useState(product)
 
     const addToCart = (product: Products) => {
-        storeCart(product)
+        // storeCart(product)
         // console.log(storeCart)
         console.log(product)
     }
@@ -37,8 +40,9 @@ const Card = ({product}: Props) => {
     return(
         <div>
 
-            {products.map((product) => (
-             <li key={product.id} className="card" onClick={() => setShowDetails(!showDetails)}>
+            {products.map((product: any) => (
+                <li key={product.id} className="card" onClick={() => setShowDetails(!showDetails)}>
+                 {/* <Cart product={product}/> */}
                 <img src={product.image} alt={product.productName} height="160px"/>
                 <div className="card-grid">
                 <p>{product.productName}</p>
@@ -50,14 +54,16 @@ const Card = ({product}: Props) => {
 
                     <p>{product.description}</p>
                     
-                    {product.facts.map(fact => ( 
+                    {product.facts.map((fact: any) => ( 
                     <p>{fact}</p>
                     ))} 
 
                     <p>Items left: {product.quantity}</p>
 
                     <div className="add">
+                        {/* <AddToCartBtn /> */}
                         <button key={product.id} onClick={() => addToCart(product)}>Add to cart</button>
+                        {/* <AddButton id={product.id} image={product.image} productName={product.productName} description={product.description} facts={product.facts} price={product.price} quantity={product.quantity} /> */}
                     </div>
                 </div>
                 ) : null}

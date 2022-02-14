@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { MyGlobalContext } from "../../context/Context";
 import { Products } from "../../models/Products";
 import "./ProductList.css"
+
 import Card from "../card/Card"
+
 import goggle1 from "../../images/goggles1.jpg"
 import goggle2 from "../../images/goggles2.jpg"
 import goggle3 from "../../images/goggles3.jpg"
@@ -9,6 +12,7 @@ import goggle4 from "../../images/goggles4.jpg"
 import goggle5 from "../../images/goggles5.jpg"
 import goggle6 from "../../images/goggles6.jpg"
 import goggle7 from "../../images/goggles7.jpg"
+
 
 
 const data: Products[] = [
@@ -106,45 +110,56 @@ const data: Products[] = [
 ]
 
 const ProductList = () => {
-    const [products, setProducts] = useState<Products[]>(data)
+    const [productsData, setProductsData] = useState<Products[]>(data)
+    const {products, setProducts} = useContext(MyGlobalContext)
     const [searchVal, setSearchVal] = useState('')
     const [message, setMessage] = useState('')
 
     useEffect( () => {
-        localStorage.setItem('products', JSON.stringify(products))
-    }, [products])
+        localStorage.setItem('products', JSON.stringify(productsData))
+        setProducts(productsData)
+        // console.log(products)
+    }, [productsData])
+
+    console.log("products are..........", products)
 
     useEffect( () => {
         let storage: [] = []
-        const products = localStorage.getItem('products')
-        if (products !== null) {
+        const allProducts = localStorage.getItem('products')
+        if (allProducts !== null) {
             try {
-                storage = JSON.parse(products)
-                console.log(storage)
+                storage = JSON.parse(allProducts)
+                // console.log(storage)
                 setProducts(storage)
+                // console.log(products)
             } catch (e) { console.log('error') }
         }
 	}, [])
 
     
     return (
-    <div>
-       
+    <div>  
 
         <input id="searchBar" type="text" placeholder="Search..." onChange={(e) => setSearchVal(e.target.value)}/> 
 
         <div className="product-list">
-        {products.filter((val) => {
+            
+        {/* {products.map((product: any) => (  
+            <h3>{product.productName}</h3> 
+        ))} */}
+        
+              {/* // <Card key={product.id} product={product} /> */}
+        {products.filter((val: any) => {
             if (searchVal === ''){
                 return val
             } 
             else if(val.productName.toLowerCase().includes(searchVal.toLowerCase())){
                 return val
             }
-        }).map((val) => {
+        }).map((val: any) => {
             return (
                 <ul >
-                    <Card key={val.id} product={[val]}/>
+                    <Card key={val.id} product={[val]} />
                 </ul>
             )
         })

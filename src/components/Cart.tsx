@@ -4,32 +4,17 @@ import shoppingBag from "../images/shopping-bag.png"
 import loginlogo from "../images/login.png"
 import Card from "../components/card/Card"
 
-const Cart = (products: Products) => {
+interface Props {
+    product: Products[]
+}
+
+const Cart = ({product}: Props) => {
     const [cart, setCart] = useState(false)
-    const [items, setItems] = useState([products])
+    const [cartStorage, setCartStorage] = useState(localStorage.getItem('cart-products'))
+    // const [items, setItems] = useState(JSON.parse(cartStorage!))
+    const [items, setItems] = useState(product)
     // const [price, setPrice] = useState(products)
     const [total, setTotal] = useState(0)
-
-    useEffect( () => {
-        let storage: [] = []
-        const products = localStorage.getItem('cart-products')
-            // if (products === null){
-            //     setShowCard(showCard)
-            // }
-            if (products !== null) {
-                try {
-                    storage = JSON.parse(products)
-                    console.log(storage)
-                    setItems(storage)
-                    // cartCalculator(total)
-                    // setShowCard(!showCard)
-                    console.log(storage) 
-                } catch (e) { console.log('error') }
-            }
-	}, [products])
-    
-    // console.log(products.price)
-    // console.log(items) //properties are empty
 
     const cartCalculator = (price: Products['price']) => {
         if(price !== null){
@@ -40,6 +25,28 @@ const Cart = (products: Products) => {
         setCart(!cart)
     }
 
+    const handleCart = (item: Products) => {
+        const newArr = [...items, item]
+        console.log('cart', newArr)
+        setItems(newArr)
+    }
+
+    useEffect( () => {
+            let storage: [] = []
+            console.log(cartStorage)
+                if (cartStorage !== null) {
+                    try {
+                        storage = JSON.parse(cartStorage)
+                        console.log(storage)
+                        setItems(storage)
+                        console.log(storage) 
+                    } catch (e) { console.log('error') }
+                }
+	}, []) //setProducts here
+    
+    console.log(items)
+    console.log(product) //properties are empty
+
     return (
         <div>
             <div className="cartButtons" >
@@ -47,22 +54,23 @@ const Cart = (products: Products) => {
             <img src={shoppingBag} 
             alt="Shopping bag icons created by CreativeCons - Flaticon" 
             height="50px" 
-            onClick={() => cartCalculator(products.price)}
+            onClick={() => cartCalculator(total)}
             className="logos" />
             </div>
             {cart ? 
-            <div>
+            <div className="dropdown-cart">
                 <h2>Your cart</h2>
 
                 <ul data-testid="cart-list">
             
                     <div data-testid="cart">
-                        {items.map(item => (
+                        {items.map((item: any) => (
                             <li key={item.id}>
                                 <p>{item.productName}</p>
                                 <p>{item.price}:-</p>
                             </li>
                         ))}
+                        {/* <Card product={items}/> */}
                         <p>Total: {total} kr</p>
                     </div>
             

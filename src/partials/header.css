@@ -17,6 +17,11 @@ header{
     justify-content: flex-end;
 }
 
+.dropdown-cart{
+    position: absolute;
+    background-color: #fff;
+}
+
 @media screen and (max-width: 768px) {
 
     #logo {
@@ -54,8 +59,6 @@ header{
   }
 
   @media screen and (max-width: 325px) {
-
-    
 
     .logos{
         height: 38px;
