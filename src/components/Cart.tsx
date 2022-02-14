@@ -13,8 +13,6 @@ const Cart = ({product}: Props) => {
     const [showCart, setShowCart] = useState(false)
     const {cart, setCart} = useContext(MyGlobalContext)
     const [cartStorage, setCartStorage] = useState(localStorage.getItem('cart-products'))
-    // const [items, setItems] = useState(JSON.parse(cartStorage!))
-    const [items, setItems] = useState(product)
     // const [price, setPrice] = useState(products)
     const [total, setTotal] = useState(0)
 
@@ -27,29 +25,19 @@ const Cart = ({product}: Props) => {
         setShowCart(!showCart)
     }
 
-    const handleCart = (item: Products) => {
-        const newArr = [...items, item]
-        console.log('cart', newArr)
-        setItems(newArr)
-    }
-
     useEffect( () => {
             let storage: [] = []
             console.log(cartStorage)
                 if (cartStorage !== null) {
                     try {
                         storage = JSON.parse(cartStorage)
-                        // console.log(storage)
-                        // setItems(storage)
                         setCart(storage)
                         console.log('useEffect', cart)
-                        // console.log(storage) 
                     } catch (e) { console.log('error') }
                 }
-	}, [setCart]) //setProducts here
+	}, [setCart])
     
     console.log('floor', cart)
-    // console.log(product) //properties are empty
 
     return (
         <div>
@@ -74,7 +62,6 @@ const Cart = ({product}: Props) => {
                                 <p>{item.price}:-</p>
                             </li>
                         ))}
-                        {/* <Card product={items}/> */}
                         <p>Total: {total} kr</p>
                     </div>
             
