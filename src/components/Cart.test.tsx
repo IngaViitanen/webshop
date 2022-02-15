@@ -21,7 +21,8 @@ describe('cart component', () => {
                 'Size: adjustable',
                 'UV-protection: yes'
                 ],
-        quantity: 5
+        quantity: 5,
+        cartQuantity: 0
     }
 
     jest.spyOn(Object.getPrototypeOf(localStorage), 'getItem')
@@ -81,12 +82,12 @@ describe('cart component', () => {
         const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
         userEvent.click(cartButton)
     
-        const cart = screen.getByTestId('cart-list')
-        expect(cart).toBeInTheDocument()
-        const cartList = within(cart).getByTestId('cart')
-        expect(cartList).toBeInTheDocument()
-        // const list = within(cartList).getByRole('listitem', {hidden:  true})
-        // expect(list).toBeInTheDocument()
+        const cart = screen.queryByTestId('cart-list')
+        const cartItems = within(cart!).queryByTestId('cart')
+        expect(cartItems).toBeInTheDocument()
+    
+        const listelem = screen.getByText('Icy Blue')
+        expect(listelem).toBeInTheDocument()
     })
 
 
@@ -105,6 +106,7 @@ describe('cart component', () => {
     })
 
     it('shows the total price of products in the cart', () => {
+        localStorage.setItem('cart-products', JSON.stringify(products))
         render(<ProductList/>)
         render(<Cart product={[products]}/>)
         
@@ -116,15 +118,20 @@ describe('cart component', () => {
         const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
         userEvent.click(cartButton)
 
-        const cart = screen.getByTestId('cart-list')
-        // expect(cart).toBeInTheDocument()
-        const cartItems = within(cart).getByTestId('cart')
+        const cart = screen.queryByTestId('cart-list')
+    //     // expect(cart).toBeInTheDocument()
+        const cartItems = within(cart!).queryByTestId('cart')
         expect(cartItems).toBeInTheDocument()
 
-    //     const cart = screen.getByTestId('cart-list')
-    //     const cartItems = within(cart).getByRole('listitem')
-        // const specs = within(cartItems).getAllByRole('listitem')
-        // expect(specs).toBeInTheDocument()
+        const listelem = screen.getByText('Icy Blue')
+        expect(listelem).toBeInTheDocument()
+        const price = screen.queryAllByText('299:-')
+        expect(price[0]).toBeInTheDocument()
+
+    // //     const cart = screen.getByTestId('cart-list')
+    // //     const cartItems = within(cart).getByRole('listitem')
+    //     const specs = within(cartItems!).queryByRole('listitem')
+    //     expect(specs).toBeInTheDocument()
 
         const total = screen.getByText('Total: 299 kr')
         expect(total).toBeInTheDocument()

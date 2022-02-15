@@ -14,7 +14,7 @@ const Cart = ({product}: Props) => {
     const [showCart, setShowCart] = useState(false)
     const {cart, setCart} = useContext(MyGlobalContext)
     // const [quantity, SetQuantity] = useState(1)
-    const [cartStorage, setCartStorage] = useState(localStorage.getItem('cart-products'))
+    const [cartStorage, setCartStorage] = useState(localStorage.getItem('cart-products') || '[]')
     // const [price, setPrice] = useState(products)
     const [total, setTotal] = useState(0)
     const [message, setMessage] = useState('')
@@ -23,24 +23,27 @@ const Cart = ({product}: Props) => {
 
     const cartCalculator = () => {
 
-        let cartQuantity = cart.map((cart:any) => cart.cartQuantity)
-        console.log('quantity', cartQuantity)
+        if(cart !== undefined){
+            let cartQuantity = cart.map((cart:any) => cart.cartQuantity)
+            console.log('quantity', cartQuantity)
+            let cartTotal = cart.map((cart: any) => cart.price )
+            console.log('total', cartTotal)
+            
+            if( cartTotal.reduce((prev: any, curr: any) => prev + curr, -1) === -1 ){
+                setMessage('Your cart is empty')
+            } else{
+                let sum = cartTotal.reduce((prev: any, curr: any) => prev + curr )
+                setMessage('')
+                setTotal(sum)
+                console.log(sum)
+            }
+        }
         
-        let cartTotal = cart.map((cart: any) => cart.price )
-        console.log('total', cartTotal)
 
         // console.log(cartTotal.reduce((prev: any, current: any) => prev + current ))
 
        
 
-        if( cartTotal.reduce((prev: any, curr: any) => prev + curr, -1) === -1 ){
-            setMessage('Your cart is empty')
-        } else{
-            let sum = cartTotal.reduce((prev: any, curr: any) => prev + curr )
-            setMessage('')
-            setTotal(sum)
-            console.log(sum)
-        }
 
         setShowCart(!showCart)
     }

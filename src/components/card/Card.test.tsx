@@ -16,11 +16,12 @@ describe('card component', () => {
                 'Size: adjustable',
                 'UV-protection: yes'
                 ],
-        quantity: 5
+        quantity: 5,
+        cartQuantity: 0
     }
 
     it('does not show details initially', () => {
-        render(<Card product={[products]}/>)
+        render(<Card product={[products]} q={0}/>)
         const item = screen.getAllByRole('listitem')
         expect(item[0]).toBeInTheDocument()
         const details = screen.queryByTestId('details')
@@ -28,7 +29,7 @@ describe('card component', () => {
     }) 
 
     it('show details after clicking an item', () => {
-        render(<Card product={[products]}/>)
+        render(<Card product={[products]} q={0}/>)
         const item = screen.getAllByRole('listitem')
         userEvent.click(item[0])
         const details = screen.queryByTestId('details')
