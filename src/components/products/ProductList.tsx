@@ -27,7 +27,8 @@ const data: Products[] = [
                 'Size: adjustable',
                 'UV-protection: yes'
                 ],
-        quantity: 5
+        quantity: 5,
+        cartQuantity: 0
     },
     {
         id: 'idid2',
@@ -40,7 +41,8 @@ const data: Products[] = [
                 'Size: adjustable',
                 'UV-protection: yes'
                 ],
-        quantity: 5
+        quantity: 5,
+        cartQuantity: 0
     },
     {
         id: 'idid3',
@@ -53,7 +55,8 @@ const data: Products[] = [
                 'Size: adjustable',
                 'UV-protection: yes'
                 ],
-        quantity: 5
+        quantity: 5,
+        cartQuantity: 0
     },
     {
         id: 'idid4',
@@ -66,7 +69,8 @@ const data: Products[] = [
                 'Size: not adjustable',
                 'UV-protection: yes'
                 ],
-        quantity: 5
+        quantity: 5,
+        cartQuantity: 0
     },
     {
         id: 'idid5',
@@ -79,7 +83,8 @@ const data: Products[] = [
                 'Size: adjustable',
                 'UV-protection: yes'
                 ],
-        quantity: 5
+        quantity: 5,
+        cartQuantity: 0
     },
     {
         id: 'idid6',
@@ -92,7 +97,8 @@ const data: Products[] = [
                 'Size: not adjustable',
                 'UV-protection: yes'
                 ],
-        quantity: 5
+        quantity: 5,
+        cartQuantity: 0
     },
     {
         id: 'idid7',
@@ -105,7 +111,8 @@ const data: Products[] = [
                 'Size: adjustable',
                 'UV-protection: yes'
                 ],
-        quantity: 5
+        quantity: 5,
+        cartQuantity: 0
     },
 ]
 
@@ -158,7 +165,7 @@ const ProductList = () => {
         }).map((val: any) => {
             return (
                 <ul >
-                    <Card key={val.id} product={[val]} />
+                    <Card key={val.id} product={[val]} q={val.quantity} />
                 </ul>
             )
         })

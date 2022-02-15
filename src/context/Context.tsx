@@ -6,8 +6,8 @@ import { Products } from '../models/Products'
     export type GlobalContext = {
         products: Products[]
         cart: Products
-        setProducts:any
-        setCart: any
+        setProducts: Products
+        setCart: Products
     }
 
     

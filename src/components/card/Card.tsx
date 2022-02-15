@@ -7,21 +7,27 @@ import Cart from "../Cart"
 
 interface Props {
     product: Products[]
-    // handleCart: (item: Products) => void
+    q: Products['quantity']
 }
 
-const Card = ({product}: Props) => {
+const Card = ({product, q}: Props) => {
     const [showDetails, setShowDetails] = useState(false)
     const [products, setProduct ]= useState(product)
     const {cart, setCart} = useContext(MyGlobalContext)
+    const [quantity, SetQuantity] = useState(q)
+    console.log(quantity)
 
     const addToCart = (product: Products) => {
-        const newCartArr = [...cart, product]
-        console.log('newCartArr', newCartArr)
-        setCart(newCartArr)
-        storeCart(product)
-        // console.log(storeCart)
-        console.log(product)
+        if(cart !== undefined){
+            const newCartArr = [...cart, product]
+            console.log(...cart)
+            console.log('newCartArr', newCartArr)
+            SetQuantity(quantity -1)
+            setCart(newCartArr)
+            storeCart(product)
+            // console.log(storeCart)
+            console.log(product)
+        }
     }
 
     const storeCart = (item: Products) => {
@@ -46,7 +52,6 @@ const Card = ({product}: Props) => {
 
             {products.map((product: any) => (
                 <li key={product.id} className="card" onClick={() => setShowDetails(!showDetails)}>
-                 {/* <Cart product={product}/> */}
                 <img src={product.image} alt={product.productName} height="160px"/>
                 <div className="card-grid">
                 <p>{product.productName}</p>
@@ -54,7 +59,7 @@ const Card = ({product}: Props) => {
                 </div>
 
                 {showDetails ? (
-                <div data-testid="details">
+                <div key={product.id + 'key'} data-testid="details">
 
                     <p>{product.description}</p>
                     
@@ -62,12 +67,10 @@ const Card = ({product}: Props) => {
                     <p>{fact}</p>
                     ))} 
 
-                    <p>Items left: {product.quantity}</p>
+                    <p>Items left: {quantity}</p>
 
                     <div className="add">
-                        {/* <AddToCartBtn /> */}
                         <button key={product.id} onClick={() => addToCart(product)}>Add to cart</button>
-                        {/* <AddButton id={product.id} image={product.image} productName={product.productName} description={product.description} facts={product.facts} price={product.price} quantity={product.quantity} /> */}
                     </div>
                 </div>
                 ) : null}

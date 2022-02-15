@@ -11,13 +11,13 @@ import {Products} from "./models/Products"
 
 function App() {
   const [products, setProducts] = useState<Products[]>([])
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState([]) //<Products | []>
 
   const values = {products, setProducts, cart, setCart}
   return (
     <MyGlobalContext.Provider value= { values }>
     <div className="App">
-      <Header id={''} image={''} productName={''} description={''} facts={[]} price={0} quantity={0}/>
+      <Header id={''} image={''} productName={''} description={''} facts={[]} price={0} quantity={0} cartQuantity={0}/>
       <ProductList />
     </div>
     </MyGlobalContext.Provider>

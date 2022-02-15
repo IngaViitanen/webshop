@@ -6,4 +6,5 @@ export interface Products {
     facts: string[]
     price: number
     quantity: number
+    cartQuantity: number
 }
