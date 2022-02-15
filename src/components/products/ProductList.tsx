@@ -117,7 +117,7 @@ const ProductList = () => {
 
     useEffect( () => {
         localStorage.setItem('products', JSON.stringify(productsData))
-        setProducts(productsData)
+        // setProducts(productsData)
         // console.log(products)
     }, [productsData])
 
@@ -148,8 +148,7 @@ const ProductList = () => {
             <h3>{product.productName}</h3> 
         ))} */}
         
-              {/* // <Card key={product.id} product={product} /> */}
-        {products.filter((val: any) => {
+        {productsData.filter((val: any) => {
             if (searchVal === ''){
                 return val
             } 

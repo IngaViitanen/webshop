@@ -56,12 +56,12 @@ const Cart = ({product}: Props) => {
                 <ul data-testid="cart-list">
             
                     <div data-testid="cart">
-                        {cart.map((item: any) => (
+                        {cart ? cart.map((item: any) => (
                             <li key={item.id}>
                                 <p>{item.productName}</p>
                                 <p>{item.price}:-</p>
                             </li>
-                        ))}
+                        )) : ''}
                         <p>Total: {total} kr</p>
                     </div>
             
