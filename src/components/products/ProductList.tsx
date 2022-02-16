@@ -12,6 +12,7 @@ import goggle4 from "../../images/goggles4.jpg"
 import goggle5 from "../../images/goggles5.jpg"
 import goggle6 from "../../images/goggles6.jpg"
 import goggle7 from "../../images/goggles7.jpg"
+import Details from "../card/Details";
 
 
 
@@ -120,7 +121,9 @@ const ProductList = () => {
     const [productsData, setProductsData] = useState<Products[]>(data)
     const {products, setProducts} = useContext(MyGlobalContext)
     const [searchVal, setSearchVal] = useState('')
-    const [message, setMessage] = useState('')
+    const [showDet, setShowDet] = useState(false)
+    const [showList, setShowList] = useState(true)
+    const [chosenId, setChosenId] = useState('')
 
     useEffect( () => {
         localStorage.setItem('products', JSON.stringify(productsData))
@@ -143,17 +146,32 @@ const ProductList = () => {
         }
 	}, [])
 
+    const detailsHandler = (item: any, id: Products['id']) => {
+        console.log(item)
+        console.log(id)
+        if(item.key !== id){
+            setShowDet(!showDet)
+            setShowList(!showList)
+            setChosenId(id)
+        } else if(item.key === id){
+            setShowDet(showDet)
+            setShowList(showList)
+        }
+    }
+
+    const goBackToList = () => {
+        setShowDet(!showDet)
+        setShowList(!showList)
+    }
+
     
     return (
     <div>  
-
+        {showList ? (
+        <div>
         <input id="searchBar" type="text" placeholder="Search..." onChange={(e) => setSearchVal(e.target.value)}/> 
 
         <div className="product-list">
-            
-        {/* {products.map((product: any) => (  
-            <h3>{product.productName}</h3> 
-        ))} */}
         
         {productsData.filter((val: any) => {
             if (searchVal === ''){
@@ -164,13 +182,27 @@ const ProductList = () => {
             }
         }).map((val: any) => {
             return (
-                <ul >
+                <ul key={val.id} onClick={() => detailsHandler(productsData, val.id)} data-testid="toDetails">
                     <Card key={val.id} product={[val]} q={val.quantity} />
                 </ul>
             )
         })
         }
         </div>
+
+        </div>
+        ) : null}
+
+        {showDet ? 
+        (
+            <div>
+                <div>
+                    <button onClick={goBackToList}>back</button>
+                </div>
+                <Details details={productsData} id={chosenId}/>
+            </div>
+        ) 
+        : null}
         
     </div>
     )

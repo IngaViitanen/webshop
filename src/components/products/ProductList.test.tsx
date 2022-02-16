@@ -3,6 +3,8 @@ import { MyGlobalContext } from '../../context/Context'
 import { Products } from '../../models/Products'
 import ProductList from './ProductList'
 import userEvent from "@testing-library/user-event"
+import Details from '../card/Details'
+
 
 describe('product list komponent', () => {
 
@@ -89,4 +91,37 @@ describe('searchbar', () => {
     //     expect(message).toBeInTheDocument()
         
     // })
+})
+
+describe('details component', () => {
+
+    const products: Products = {
+        id: 'idid1',
+        image: '',
+        productName: 'Icy Blue',
+        description: 'Ski goggles with an icy blue color hue. Perfect for skiing in any weather and great for protecting your eyes from the snow. Ski fast and look amazing!',
+        price: 299,
+        facts: [
+                'Color: Icy Blue',
+                'Size: adjustable',
+                'UV-protection: yes'
+                ],
+        quantity: 5,
+        cartQuantity: 0
+    }
+
+    it('does not show details initially', () => {
+        render(<ProductList/>)
+        const details = screen.queryByTestId('details')
+        expect(details).not.toBeInTheDocument()
+    }) 
+
+    it('show details after clicking an item', () => {
+        render(<ProductList/>)
+        render(<Details details={[products]} id={products.id}/>)
+        const item = screen.getAllByRole('listitem')
+        userEvent.click(item[0])
+        const details = screen.getAllByTestId('details')
+        expect(details[0]).toBeInTheDocument()
+    }) 
 })

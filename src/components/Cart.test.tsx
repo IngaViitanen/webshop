@@ -86,7 +86,7 @@ describe('cart component', () => {
         const cartItems = within(cart!).queryByTestId('cart')
         expect(cartItems).toBeInTheDocument()
     
-        const listelem = screen.getByText('Icy Blue')
+        const [listelem] = screen.getAllByText('Icy Blue')
         expect(listelem).toBeInTheDocument()
     })
 
@@ -123,7 +123,7 @@ describe('cart component', () => {
         const cartItems = within(cart!).queryByTestId('cart')
         expect(cartItems).toBeInTheDocument()
 
-        const listelem = screen.getByText('Icy Blue')
+        const [listelem] = screen.getAllByText('Icy Blue')
         expect(listelem).toBeInTheDocument()
         const price = screen.queryAllByText('299:-')
         expect(price[0]).toBeInTheDocument()
