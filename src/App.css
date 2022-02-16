@@ -1,3 +1,5 @@
+/* @import './images/snow.jpg'; */
+
 .App {
   text-align: center;
 }
@@ -6,6 +8,9 @@
 body{
   margin-top: 0.2rem;
   background-color: #9aa5e7;
+  background-image: url('./images/snow.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 p{

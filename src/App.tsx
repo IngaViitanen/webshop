@@ -16,7 +16,7 @@ function App() {
   const values = {products, setProducts, cart, setCart}
   return (
     <MyGlobalContext.Provider value= { values }>
-    <div className="App">
+    <div className="App" >
       <Header id={''} image={''} productName={''} description={''} facts={[]} price={0} quantity={0} cartQuantity={0}/>
       <ProductList />
     </div>

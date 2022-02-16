@@ -4,6 +4,7 @@ import { Products } from "../models/Products";
 import shoppingBag from "../images/shopping-bag.png"
 import loginlogo from "../images/login.png"
 import Card from "../components/card/Card"
+import Login from "./user/Login";
 
 interface Props {
     product: Products[]
@@ -66,7 +67,7 @@ const Cart = ({product}: Props) => {
     return (
         <div>
             <div className="cartButtons" >
-            <img className="logos" src={loginlogo} alt="Login icons created by Good Ware - Flaticon" height="50px" />
+            <Login />
             <img src={shoppingBag} 
             alt="Shopping bag icons created by CreativeCons - Flaticon" 
             height="50px" 
