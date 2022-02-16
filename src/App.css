@@ -11,6 +11,7 @@ body{
   background-image: url('./images/snow.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  min-height: 1000px;
 }
 
 p{
@@ -22,4 +23,13 @@ p{
 ul{
   padding: 0;
   margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+
+  /* body{
+    background-image: url('./images/snow.jpg');
+    background-repeat: no-repeat;
+    background-size: 1920px;
+  } */
 }

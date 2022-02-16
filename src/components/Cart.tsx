@@ -66,13 +66,13 @@ const Cart = ({product}: Props) => {
 
     return (
         <div>
-            <div className="cartButtons" >
-            <Login />
+            <div >
+            {/* <Login /> */}
             <img src={shoppingBag} 
             alt="Shopping bag icons created by CreativeCons - Flaticon" 
             height="50px" 
             onClick={ () => cartCalculator() }
-            className="logos" />
+            className="logos"/>
             </div>
             {showCart ? 
             <div className="dropdown-cart">
@@ -89,8 +89,9 @@ const Cart = ({product}: Props) => {
                             </li>
                         )) : ''}
                         <p>Total: {total} kr</p>
+                        <button>PURCHASE</button>
                     </div>
-            
+                        
                 </ul>
 
             </div>

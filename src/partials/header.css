@@ -10,6 +10,13 @@ header{
     margin: 0.5rem;
 }
 
+.logos{
+    filter: invert();
+}
+.logos:hover{
+    cursor: pointer;
+}
+
 .cartButtons{
     margin: 0rem;
     display: flex;
@@ -18,8 +25,24 @@ header{
 }
 
 .dropdown-cart{
-    position: absolute;
     background-color: #fff;
+    position: fixed;
+    right: 100%;
+    right: 0;
+    width: 400px;
+    height: 400px;
+    /* transition-delay: 2s; */
+}
+
+.dropdown-login{
+    position: fixed;
+    right: 100%;
+    right: 0;
+    margin-right: 53px;
+    width: 300px;
+    transition: 1s;
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (max-width: 768px) {

@@ -1,0 +1,11 @@
+.invalid{
+    border: 2px solid red;
+}
+
+.invalidMess{
+    color: #fff;
+}
+
+.bg-login{
+    background-color: rgb(0, 0, 0);
+}
