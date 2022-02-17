@@ -107,7 +107,6 @@ describe('details component', () => {
                 'UV-protection: yes'
                 ],
         quantity: 5,
-        cartQuantity: 0
     }
 
     it('does not show details initially', () => {
@@ -118,7 +117,7 @@ describe('details component', () => {
 
     it('show details after clicking an item', () => {
         render(<ProductList/>)
-        render(<Details details={[products]} id={products.id}/>)
+        render(<Details details={products} id={products.id} updateProduct={(updated: Products) => updated}/>)
         const item = screen.getAllByRole('listitem')
         userEvent.click(item[0])
         const details = screen.getAllByTestId('details')

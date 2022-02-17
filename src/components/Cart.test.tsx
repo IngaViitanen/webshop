@@ -22,7 +22,6 @@ describe('cart component', () => {
                 'UV-protection: yes'
                 ],
         quantity: 5,
-        cartQuantity: 0
     }
 
     jest.spyOn(Object.getPrototypeOf(localStorage), 'getItem')

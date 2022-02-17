@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { MyGlobalContext } from "../../context/Context";
-import { Products } from "../../models/Products";
+import { CartItem, Products } from "../../models/Products";
 import "./ProductList.css"
 
 import Card from "../card/Card"
@@ -29,7 +29,7 @@ const data: Products[] = [
                 'UV-protection: yes'
                 ],
         quantity: 5,
-        cartQuantity: 0
+        
     },
     {
         id: 'idid2',
@@ -43,7 +43,7 @@ const data: Products[] = [
                 'UV-protection: yes'
                 ],
         quantity: 5,
-        cartQuantity: 0
+        
     },
     {
         id: 'idid3',
@@ -57,7 +57,7 @@ const data: Products[] = [
                 'UV-protection: yes'
                 ],
         quantity: 5,
-        cartQuantity: 0
+        
     },
     {
         id: 'idid4',
@@ -71,7 +71,7 @@ const data: Products[] = [
                 'UV-protection: yes'
                 ],
         quantity: 5,
-        cartQuantity: 0
+        
     },
     {
         id: 'idid5',
@@ -85,7 +85,7 @@ const data: Products[] = [
                 'UV-protection: yes'
                 ],
         quantity: 5,
-        cartQuantity: 0
+        
     },
     {
         id: 'idid6',
@@ -99,7 +99,7 @@ const data: Products[] = [
                 'UV-protection: yes'
                 ],
         quantity: 5,
-        cartQuantity: 0
+        
     },
     {
         id: 'idid7',
@@ -113,17 +113,27 @@ const data: Products[] = [
                 'UV-protection: yes'
                 ],
         quantity: 5,
-        cartQuantity: 0
+    
     },
 ]
 
 const ProductList = () => {
     const [productsData, setProductsData] = useState<Products[]>(data)
+    const [cartitem, setCartitem] = useState<CartItem>()
     const {products, setProducts} = useContext(MyGlobalContext)
     const [searchVal, setSearchVal] = useState('')
     const [showDet, setShowDet] = useState(false)
     const [showList, setShowList] = useState(true)
     const [chosenId, setChosenId] = useState('')
+    const chosenProduct = productsData.find(product => product.id === chosenId)
+    
+    const updateProduct = (updated: Products) => {
+        console.log('update product....', updated)
+
+        setProductsData(
+        productsData.map((p) => p.id === updated.id ? updated : p) 
+        )
+    }
 
     useEffect( () => {
         localStorage.setItem('products', JSON.stringify(productsData))
@@ -131,7 +141,8 @@ const ProductList = () => {
         // console.log(products)
     }, [productsData])
 
-    console.log("products are..........", products)
+    console.log("products are..........", productsData)
+   
 
     useEffect( () => {
         let storage: [] = []
@@ -139,12 +150,12 @@ const ProductList = () => {
         if (allProducts !== null) {
             try {
                 storage = JSON.parse(allProducts)
-                // console.log(storage)
+                // setQuant(JSON.parse(localStorage.getItem('products') || '').quantity)
+                // console.log('.......................',quant)
                 setProducts(storage)
-                // console.log(products)
             } catch (e) { console.log('error') }
         }
-	}, [])
+	}, [setProducts])
 
     const detailsHandler = (item: any, id: Products['id']) => {
         console.log(item)
@@ -162,7 +173,9 @@ const ProductList = () => {
     const goBackToList = () => {
         setShowDet(!showDet)
         setShowList(!showList)
+        // setProductsData(productsData)
     }
+
 
     
     return (
@@ -183,11 +196,11 @@ const ProductList = () => {
         }).map((val: any) => {
             return (
                 <ul key={val.id} onClick={() => detailsHandler(productsData, val.id)} data-testid="toDetails">
-                    <Card key={val.id} product={[val]} q={val.quantity} />
+                    <Card key={val.id} product={[val]} q={val.quantity} whenClick={(id) => setChosenId(id)} />
+                    <p>{val.quantity}</p>
                 </ul>
             )
-        })
-        }
+        })}
         </div>
 
         </div>
@@ -199,7 +212,7 @@ const ProductList = () => {
                 <div>
                     <button onClick={goBackToList}>back</button>
                 </div>
-                <Details details={productsData} id={chosenId}/>
+                <Details details={chosenProduct as Products} id={chosenId} updateProduct={updateProduct} item={cartitem as CartItem} />
             </div>
         ) 
         : null}

@@ -8,17 +8,20 @@ import Cart from "../Cart"
 interface Props {
     product: Products[]
     q: Products['quantity']
+    whenClick: (id: string) => void
 }
 
-const Card = ({product, q}: Props) => {
+const Card = ({product, q, whenClick}: Props) => {
     const [products, setProduct ]= useState(product)
+    
+
    
 
     return(
         <div>
 
             {products.map((product: any) => (
-                <li key={product.id} className="card" >
+                <li key={product.id} className="card" onClick={(id) => whenClick(product.id)}>
                 <img id="card-img" src={product.image} alt={product.productName} height="160px"/>
                 <div className="card-grid">
                 <p>{product.productName}</p>

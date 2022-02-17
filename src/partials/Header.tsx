@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
 import Cart from "../components/Cart"
-import { Products } from "../models/Products"
+import { CartItem, Products } from "../models/Products"
 import bigLogo from "../images/logo.png"
 import "./header.css"
 import Login from "../components/user/Login"
 
-const Header = (products: Products) => {
+const Header = (products: Products, cartitem: CartItem) => {
     const [loggedin, setLoggedin] = useState<boolean>(false)
     const [userStorage, setUserStorage] = useState(JSON.parse(localStorage.getItem('login') || '{}' ))
 
@@ -24,7 +24,7 @@ const Header = (products: Products) => {
             <img id="logo" src={bigLogo} alt="logo made by Inga Viitanen" height="32px"/>
             <div className="cartButtons">
             <Login loggedin={loggedin} setLoggedin={setLoggedin}/>
-            <Cart product={[products]} />
+            <Cart product={[products]} cartitem={cartitem} />
             </div>
         </header>
     )

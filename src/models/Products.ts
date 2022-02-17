@@ -5,6 +5,10 @@ export interface Products {
     description: string
     facts: string[]
     price: number
-    quantity: number
+    quantity: number 
+}
+
+export interface CartItem {
+    ogProduct: Products
     cartQuantity: number
 }

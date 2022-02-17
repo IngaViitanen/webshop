@@ -26,7 +26,7 @@ function Login({loggedin, setLoggedin}: Props) {
         }
 				else if( UserData[i].username === username && UserData[i].password === password) {
 					console.log('success')
-					const userName = { name: UserData[i].name, loggedin: true}
+					const userName = { name: UserData[i].name, adress: UserData[i].adress, loggedin: true}
 					setLoggedin(true)
 					localStorage.setItem( 'loggedin', JSON.stringify(userName) )
           setValidcss('')

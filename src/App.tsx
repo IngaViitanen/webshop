@@ -1,23 +1,19 @@
-import { MyGlobalContext } from './context/Context';
+import { GlobalContext, MyGlobalContext } from './context/Context';
 import React, {useState} from 'react';
 import './App.css';
 import ProductList from './components/products/ProductList';
 import Header from './partials/Header';
-import {Products} from "./models/Products"
-
-// interface Props {
-//   handleCart: (item: Products) => void
-// }
+import {Products, CartItem} from "./models/Products"
 
 function App() {
   const [products, setProducts] = useState<Products[]>([])
-  const [cart, setCart] = useState([]) //<Products | []>
+  const [cart, setCart] = useState<CartItem[]>([]) 
 
-  const values = {products, setProducts, cart, setCart}
+  const values: GlobalContext = {products, setProducts, cart, setCart}
   return (
     <MyGlobalContext.Provider value= { values }>
     <div className="App" >
-      <Header id={''} image={''} productName={''} description={''} facts={[]} price={0} quantity={0} cartQuantity={0}/>
+      <Header id={''} image={''} productName={''} description={''} facts={[]} price={0} quantity={0} />
       <ProductList />
     </div>
     </MyGlobalContext.Provider>
