@@ -9,7 +9,7 @@ interface Props{
     item: CartItem
 }
 
-const Details = ({details, item, updateProduct}: Props) => {
+const Details = ({details, item, updateProduct, id}: Props) => {
     const [detail, setDetail] = useState(details)
     const {cart, setCart} = useContext(MyGlobalContext)
     const {products, setProducts} = useContext(MyGlobalContext)
@@ -74,7 +74,7 @@ const Details = ({details, item, updateProduct}: Props) => {
 
     const storeCart = (item: any) => {
         let cartProduct: Array<object> | null = []
-        let matching: Array<object>
+        // let matching: Array<object>
         let storage = localStorage.getItem('cart-products')
         const isItemInCart = cart?.find((cart:any) => cart.id === detail.id ) 
         console.log(isItemInCart)
@@ -87,20 +87,21 @@ const Details = ({details, item, updateProduct}: Props) => {
             } catch(e) {
                 console.log('Failed to add item to cart')
             }
-        } else if(storage && isItemInCart){
-            try{
-                cartProduct = JSON.parse(storage)
-                console.log('found match in storage', isItemInCart)
-                const updateCartitem = cartProduct?.find((c) => c === detail ? item : cartProduct)
-                // console.log(cartProduct?.find((c:any) => c.id === detail.id ? {...cart, cartQuantity: cart.cartQantity +1}: cartProduct))
-                console.log(updateCartitem)
-                // cart?.map((cart:any) => cart.id === detail.id ? {...cart, cartQuantity: cart.cartQuantity +1} : cart)
-                localStorage.setItem('cart-products', JSON.stringify(cartProduct))
-                console.log(storage)
-            }catch(e){
-                console.log('failed to update cartitem')
-            }
-        }
+        } 
+        // else if(storage && isItemInCart){
+        //     try{
+        //         cartProduct = JSON.parse(storage)
+        //         console.log('found match in storage', isItemInCart)
+        //         const updateCartitem = cartProduct?.find((c) => c === detail ? item : cartProduct)
+        //         // console.log(cartProduct?.find((c:any) => c.id === detail.id ? {...cart, cartQuantity: cart.cartQantity +1}: cartProduct))
+        //         console.log(updateCartitem)
+        //         // cart?.map((cart:any) => cart.id === detail.id ? {...cart, cartQuantity: cart.cartQuantity +1} : cart)
+        //         localStorage.setItem('cart-products', JSON.stringify(cartProduct))
+        //         console.log(storage)
+        //     }catch(e){
+        //         console.log('failed to update cartitem')
+        //     }
+        // }
         else {
             localStorage.setItem('cart-products', JSON.stringify(cart))
         }

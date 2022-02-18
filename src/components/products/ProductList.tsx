@@ -133,13 +133,14 @@ const ProductList = () => {
         setProductsData(
         productsData.map((p) => p.id === updated.id ? updated : p) 
         )
+        // localStorage.setItem('products', JSON.stringify(productsData))
         
     }
 
     useEffect( () => {
         localStorage.setItem('products', JSON.stringify(productsData))
-        // setProducts(productsData)
-        // console.log(products)
+        setProductsData(productsData)
+        console.log(productsData)
     }, [productsData])
 
     console.log("products are..........", productsData)
@@ -156,6 +157,8 @@ const ProductList = () => {
                 setProductsData(storage)
                 setProducts(storage)
             } catch (e) { console.log('error') }
+        }else{
+            localStorage.setItem('cart-products', JSON.stringify(productsData))
         }
 	}, [setProductsData])
 

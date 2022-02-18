@@ -27,22 +27,8 @@ const Cart = ({product, cartitem}: Props) => {
 
     useEffect(() => {
         if(cart !== undefined){
-            
-    
-            // let cartQuant = cart?.map((cart:any) => cart.cartQuantity)
-            // console.log('cartQantity..........', cartQuant)
-    
-            // console.log('COUNTER LLLLLLLLLLLLLLL', cart?.map((cart:any) => cart.price))
     
             let cartTotal = cart.map((cart: any) => cart.price )
-            // console.log('total.......', cartTotal)
-    
-            // let cartKey = cart.map((cart: any) => cart.id)
-            // console.log(cartKey)
-            // let quant = cartQuant.reduce((prev: any, curr: any) => prev + curr)
-            // console.log(quant)
-    
-            // let sum = cartTotal.reduce((prev: any, curr: any) => prev + curr )
             
             if( cartTotal.reduce((prev: any, curr: any) => prev + curr, -1) === -1 ){
                 setMessage('Your cart is empty')
@@ -51,7 +37,7 @@ const Cart = ({product, cartitem}: Props) => {
                 let totalOfOneItem = cart?.map((cart:any) => { return {...cart, totalPrice: cart.price * cart.cartQuantity} })
                 let newPrice = totalOfOneItem.map((cart: any) => cart.totalPrice)
                 let sumOfEverything = newPrice.reduce((prev:any, curr: any) => prev + curr)
-                console.log(sumOfEverything)
+                // console.log(sumOfEverything)
                 
                 setMessage('')
                 setTotal(sumOfEverything)
@@ -62,11 +48,12 @@ const Cart = ({product, cartitem}: Props) => {
         
 
     const increaseItem = (btnID: any, id: any) => {
-        const upitem = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1} : cart)
+        const upitem = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.quantity -1} : cart)
         console.log(upitem)
         console.log('INCREASE', cart?.find((cart:any) => cart.id === cart.id ? {...cart, cartQuantity: cart.cartQuantity +1} : cart) )
         if(btnID === id){
             setCart(upitem)
+            localStorage.setItem('cart-products', JSON.stringify(upitem))
         }
     }
 
@@ -74,16 +61,45 @@ const Cart = ({product, cartitem}: Props) => {
     const decreaseItem = (btnID: any, id: any) => {
         const downitem = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity -1} : cart)
         console.log(downitem)
-        console.log('INCREASE', cart?.find((cart:any) => cart.id === cart.id ? {...cart, cartQuantity: cart.cartQuantity -1} : cart) )
-        if(btnID === id){
-            setCart(downitem)
+        // let checkQuantity = cart.map((cart: any) => cart.cartQuantity )
+        // console.log(( checkQuantity.reduce((prev: any, curr: any) => prev + curr) === 1))
+            if(btnID === id){
+                setCart(downitem)
+                localStorage.setItem('cart-products', JSON.stringify(downitem))
         }
     }
 
+    const deleteItem = (id: any) =>{
+        let array = [...cart]
+        console.log(id)
+        let index = id
+
+        array.splice(index, 1)
+        localStorage.setItem('cart-products', JSON.stringify(array))
+        setCart(array)
+    }
+
+    // let checkQuantity = cart.map((cart: any) => cart.cartQuantity )
+    // console.log(checkQuantity)
+
+    // if( checkQuantity.reduce((prev: any, curr: any) => prev + curr, -2) === 0){
+    //     console.log('i am 0')
+    //     cart.splice()
+    //     // let items = JSON.parse(cartStorage); // updated
+    //     // for (var i =0; i< items.length; i++) {
+    //     //      items = JSON.parse(items[i]);
+    //     //     if (items.cartQuantity == 0) {
+    //     //         items.splice(i, 1);
+    //     //     }
+    //     // }
+    //     // items = JSON.stringify(items);
+    //     // localStorage.setItem("cart-products", items) 
+    //     // cart.splice(id)
+    // } 
     
 
     useEffect( () => {
-            let storage: CartItem[]
+            let storage: [] = []
             // console.log(storage)
                 if (cartStorage !== null) {
                     try {
@@ -91,6 +107,8 @@ const Cart = ({product, cartitem}: Props) => {
                         setCart(storage)
                         console.log('useEffect', storage)
                     } catch (e) { console.log('error') }
+                } else{
+                    localStorage.setItem('cart-products', JSON.stringify(cart))
                 }
 	}, [setCart])
     
@@ -113,7 +131,7 @@ const Cart = ({product, cartitem}: Props) => {
                 <ul data-testid="cart-list" className="cart-list">
                     <p>{message}</p>
                     <div data-testid="cart">
-                        {cart ? cart.map((item: any) => (
+                        {cart ? cart.map((item: any, index:any) => (
                             <li className="c-list" key={item.id}>
                                 <p className="p">{item.productName}</p>
                                 <div id="quantity">
@@ -124,6 +142,8 @@ const Cart = ({product, cartitem}: Props) => {
                                 <p className="p">{item.cartQuantity}</p>
 
                                 <button onClick={() => increaseItem(item.id, item.id)} >+</button>
+
+                                <button onClick={() => deleteItem(index)}>delete</button>
                                 
                                 </div>
                             </li>
