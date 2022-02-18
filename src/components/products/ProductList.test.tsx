@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react'
 import { MyGlobalContext } from '../../context/Context'
-import { Products } from '../../models/Products'
+import { Products, CartItem } from '../../models/Products'
 import ProductList from './ProductList'
 import userEvent from "@testing-library/user-event"
 import Details from '../card/Details'
@@ -109,6 +109,11 @@ describe('details component', () => {
         quantity: 5,
     }
 
+    const cartitem: CartItem = {
+        ogProduct: products,
+        cartQuantity: 1
+    }
+
     it('does not show details initially', () => {
         render(<ProductList/>)
         const details = screen.queryByTestId('details')
@@ -117,7 +122,7 @@ describe('details component', () => {
 
     it('show details after clicking an item', () => {
         render(<ProductList/>)
-        render(<Details details={products} id={products.id} updateProduct={(updated: Products) => updated}/>)
+        render(<Details details={products} id={products.id} updateProduct={(updated: Products) => updated} item={cartitem}/>)
         const item = screen.getAllByRole('listitem')
         userEvent.click(item[0])
         const details = screen.getAllByTestId('details')

@@ -6,8 +6,8 @@ import Header from './partials/Header';
 import {Products, CartItem} from "./models/Products"
 
 function App() {
-  const [products, setProducts] = useState<Products[]>([])
-  const [cart, setCart] = useState<CartItem[]>([]) 
+  const [products, setProducts] = useState<Products[]>([] as Products[])
+  const [cart, setCart] = useState<CartItem[]>([] as CartItem[]) 
 
   const values: GlobalContext = {products, setProducts, cart, setCart}
   return (

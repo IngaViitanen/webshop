@@ -13,8 +13,8 @@ import { CartItem, Products } from '../models/Products'
     
     
     export default function ContextProvider (props: any) {
-            const [products, setProducts] = useState<Products[]>(props)
-            const [cart, setCart] = useState<CartItem[]>(props)
+            const [products, setProducts] = useState<Products[]>([] as Products[])
+            const [cart, setCart] = useState<CartItem[]>([] as CartItem[])
             return (
                 <MyGlobalContext.Provider value={{products, setProducts, cart, setCart}}>
                     {props.children}

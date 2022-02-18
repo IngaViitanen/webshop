@@ -133,6 +133,7 @@ const ProductList = () => {
         setProductsData(
         productsData.map((p) => p.id === updated.id ? updated : p) 
         )
+        
     }
 
     useEffect( () => {
@@ -152,10 +153,11 @@ const ProductList = () => {
                 storage = JSON.parse(allProducts)
                 // setQuant(JSON.parse(localStorage.getItem('products') || '').quantity)
                 // console.log('.......................',quant)
+                setProductsData(storage)
                 setProducts(storage)
             } catch (e) { console.log('error') }
         }
-	}, [setProducts])
+	}, [setProductsData])
 
     const detailsHandler = (item: any, id: Products['id']) => {
         console.log(item)
@@ -197,7 +199,6 @@ const ProductList = () => {
             return (
                 <ul key={val.id} onClick={() => detailsHandler(productsData, val.id)} data-testid="toDetails">
                     <Card key={val.id} product={[val]} q={val.quantity} whenClick={(id) => setChosenId(id)} />
-                    <p>{val.quantity}</p>
                 </ul>
             )
         })}

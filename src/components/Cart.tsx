@@ -22,8 +22,8 @@ const Cart = ({product, cartitem}: Props) => {
     const [message, setMessage] = useState('')
     const [value, setValue] = useState(1)
 
-    const updCart = [...cart]
-    console.log(updCart)
+    // const updCart = [...cart]
+    // console.log(updCart)
     
     
     const c = (item: any, id: Products['id']) => {
@@ -38,14 +38,6 @@ const Cart = ({product, cartitem}: Props) => {
         //    //  updateStorage(product)
         //    // return
         //    }
-        // for( let i = 0; i < cart.length; i++) {
-        //     if(item[i].id !== id ){
-        //         console.log('did not exist before')
-        //     }
-        //             else if( item[i].id == id ) {
-        //                 console.log('does exist')
-        //     }
-        // }
     }
 
 
@@ -55,23 +47,23 @@ const Cart = ({product, cartitem}: Props) => {
     const cartCalculator = () => {
 
         if(cart !== undefined){
-            // let cartQuantity = {...cartitem, cartQuantity: cartitem.cartQuantity}
-            // console.log('cartQantity..........', cartQuantity)
+            let cartQuantity = {...cart, cartQuantity: cart.cartQuantity}
+            console.log('cartQantity..........', cartQuantity)
 
-            // let cartTotal = cart.map((cart: any) => cart.price )
-            // console.log('total.......', cartTotal)
+            let cartTotal = cart.map((cart: any) => cart.price )
+            console.log('total.......', cartTotal)
 
             // let cartKey = cart.map((cart: any) => cart.id)
             // console.log(cartKey)
             
-            // if( cartTotal.reduce((prev: any, curr: any) => prev + curr, -1) === -1 ){
-            //     setMessage('Your cart is empty')
-            // } else{
-            //     let sum = cartTotal.reduce((prev: any, curr: any) => prev + curr )
-            //     setMessage('')
-            //     setTotal(sum)
-            //     console.log(sum)
-            // }
+            if( cartTotal.reduce((prev: any, curr: any) => prev + curr, -1) === -1 ){
+                setMessage('Your cart is empty')
+            } else{
+                let sum = cartTotal.reduce((prev: any, curr: any) => prev + curr )
+                setMessage('')
+                setTotal(sum)
+                console.log(sum)
+            }
         }
         
         // c(cart)
@@ -80,16 +72,37 @@ const Cart = ({product, cartitem}: Props) => {
 
 
         setShowCart(!showCart)
+
     }
+
+    const increaseItem = (btnID: any, id: any) => {
+        const upitem = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1} : cart)
+        console.log(upitem)
+        console.log('INCREASE', cart?.find((cart:any) => cart.id === cart.id ? {...cart, cartQuantity: cart.cartQuantity +1} : cart) )
+        if(btnID === id){
+            setCart(upitem)
+        }
+    }
+
+
+    const decreaseItem = (btnID: any, id: any) => {
+        const downitem = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity -1} : cart)
+        console.log(downitem)
+        console.log('INCREASE', cart?.find((cart:any) => cart.id === cart.id ? {...cart, cartQuantity: cart.cartQuantity -1} : cart) )
+        if(btnID === id){
+            setCart(downitem)
+        }
+    }
+
+
     
 
     useEffect( () => {
             let storage: CartItem[]
-            // console.log(cartStorage)
+            // console.log(storage)
                 if (cartStorage !== null) {
                     try {
                         storage = JSON.parse(cartStorage)
-                        // console.log(cartStorage)
                         setCart(storage)
                         console.log('useEffect', storage)
                     } catch (e) { console.log('error') }
@@ -116,21 +129,21 @@ const Cart = ({product, cartitem}: Props) => {
                     <p>{message}</p>
                     <div data-testid="cart">
                         {cart ? cart.map((item: any) => (
-                            <li className="c-list" key={item.ogProduct.id}>
-                                <p className="p">{item.ogProduct.productName}</p>
+                            <li className="c-list" key={item.id}>
+                                <p className="p">{item.productName}</p>
                                 <div id="quantity">
-                                <p className="p">{item.ogProduct.price}:-</p>
+                                <p className="p">{item.price}:-</p>
 
-                                <button >-</button>
+                                <button onClick={() => decreaseItem(item.id, item.id)} >-</button>
 
-                                {/* <p className="p">{item.cartQuantity}</p> */}
+                                <p className="p">{item.cartQuantity}</p>
 
-                                <button >+</button>
+                                <button onClick={() => increaseItem(item.id, item.id)} >+</button>
                                 
                                 </div>
                             </li>
                         )) : ''}
-                        <p>Total: {total} kr</p>
+                        <p data-testid="total">Total: {total} kr</p>
                         <button>PURCHASE</button>
                     </div>
                         
