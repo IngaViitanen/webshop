@@ -2,7 +2,7 @@
 
 description coming soon !
 
-## User Stories:
+## User Stories📜
 1. As a user I want to see a list of products so that i can easily decide if I am intrested
 
 2. As a user i want to be able to click on a product to see more information about that product
