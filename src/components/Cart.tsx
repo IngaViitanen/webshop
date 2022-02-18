@@ -15,65 +15,51 @@ const Cart = ({product, cartitem}: Props) => {
     const [showCart, setShowCart] = useState(false)
     const {cart, setCart} = useContext(MyGlobalContext)
 
-    // const [quantity, SetQuantity] = useState(1)
     const [cartStorage, setCartStorage] = useState(localStorage.getItem('cart-products') || '[]')
-    // const [price, setPrice] = useState(products)
     const [total, setTotal] = useState(0)
     const [message, setMessage] = useState('')
     const [value, setValue] = useState(1)
 
-    // const updCart = [...cart]
-    // console.log(updCart)
     
     
-    const c = (item: any, id: Products['id']) => {
-        // const prodIndex = updCart.findIndex(prod => prod.id === cart.id)
-        // if(item.key === id){
-        //     item.cartQuantity = item.cartQuantity + 1
-        //     // item.quantity = item.quantity -1
-        //     // updatePro({...cart, quantity: cart.quantity})
-        //     console.log(item)
-        //     // setProducts(cart)
-        //    //  return
-        //    //  updateStorage(product)
-        //    // return
-        //    }
-    }
 
+    // const cartCalculator = () => {
 
-
-    // console.log(cartStorage)
-
-    const cartCalculator = () => {
-
+    useEffect(() => {
         if(cart !== undefined){
-            let cartQuantity = {...cart, cartQuantity: cart.cartQuantity}
-            console.log('cartQantity..........', cartQuantity)
-
+            
+    
+            // let cartQuant = cart?.map((cart:any) => cart.cartQuantity)
+            // console.log('cartQantity..........', cartQuant)
+    
+            // console.log('COUNTER LLLLLLLLLLLLLLL', cart?.map((cart:any) => cart.price))
+    
             let cartTotal = cart.map((cart: any) => cart.price )
-            console.log('total.......', cartTotal)
-
+            // console.log('total.......', cartTotal)
+    
             // let cartKey = cart.map((cart: any) => cart.id)
             // console.log(cartKey)
+            // let quant = cartQuant.reduce((prev: any, curr: any) => prev + curr)
+            // console.log(quant)
+    
+            // let sum = cartTotal.reduce((prev: any, curr: any) => prev + curr )
             
             if( cartTotal.reduce((prev: any, curr: any) => prev + curr, -1) === -1 ){
                 setMessage('Your cart is empty')
             } else{
-                let sum = cartTotal.reduce((prev: any, curr: any) => prev + curr )
+    
+                let totalOfOneItem = cart?.map((cart:any) => { return {...cart, totalPrice: cart.price * cart.cartQuantity} })
+                let newPrice = totalOfOneItem.map((cart: any) => cart.totalPrice)
+                let sumOfEverything = newPrice.reduce((prev:any, curr: any) => prev + curr)
+                console.log(sumOfEverything)
+                
                 setMessage('')
-                setTotal(sum)
-                console.log(sum)
+                setTotal(sumOfEverything)
             }
         }
+    })
+
         
-        // c(cart)
-
-        // console.log(cartTotal.reduce((prev: any, current: any) => prev + current ))
-
-
-        setShowCart(!showCart)
-
-    }
 
     const increaseItem = (btnID: any, id: any) => {
         const upitem = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1} : cart)
@@ -93,7 +79,6 @@ const Cart = ({product, cartitem}: Props) => {
             setCart(downitem)
         }
     }
-
 
     
 
@@ -118,7 +103,7 @@ const Cart = ({product, cartitem}: Props) => {
             <img src={shoppingBag} 
             alt="Shopping bag icons created by CreativeCons - Flaticon" 
             height="50px" 
-            onClick={ () => cartCalculator() }
+            onClick={ () => setShowCart(!showCart) }
             className="logos"/>
             </div>
             {showCart ? 
