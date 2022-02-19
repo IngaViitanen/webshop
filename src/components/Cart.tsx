@@ -18,7 +18,7 @@ const Cart = ({product, cartitem}: Props) => {
     const [cartStorage, setCartStorage] = useState(localStorage.getItem('cart-products') || '[]')
     const [total, setTotal] = useState(0)
     const [message, setMessage] = useState('')
-    const [value, setValue] = useState(1)
+    const [soldOutMessage, setSoldOutMessage ] = useState('')
 
     
     
@@ -50,23 +50,45 @@ const Cart = ({product, cartitem}: Props) => {
     const increaseItem = (btnID: any, id: any) => {
         const upitem = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.quantity -1} : cart)
         console.log(upitem)
+        let checkQuantity = cart.map((cart: any) => cart.quantity )
+
+        let checkifzero = checkQuantity.reduce((prev: any, curr: any) => prev + curr) === 0
+        console.log(checkifzero)
+
         console.log('INCREASE', cart?.find((cart:any) => cart.id === cart.id ? {...cart, cartQuantity: cart.cartQuantity +1} : cart) )
+        
         if(btnID === id){
-            setCart(upitem)
-            localStorage.setItem('cart-products', JSON.stringify(upitem))
-        }
+            if(!checkifzero){
+                setCart(upitem)
+                localStorage.setItem('cart-products', JSON.stringify(upitem))          
+            } else if(checkifzero){
+                console.log('THERE IS NOTHING LEFT')
+                setSoldOutMessage('This item has been sold out')
+            }
+        } 
     }
 
 
     const decreaseItem = (btnID: any, id: any) => {
-        const downitem = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity -1} : cart)
+        const downitem = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity -1, quantity: cart.quantity +1} : cart)
         console.log(downitem)
+
+        let checkQuantity = cart.map((cart: any) => cart.cartQuantity )
+
+        let checkifzero = checkQuantity.reduce((prev: any, curr: any) => prev + curr) === 1
+        console.log(checkifzero)
         // let checkQuantity = cart.map((cart: any) => cart.cartQuantity )
         // console.log(( checkQuantity.reduce((prev: any, curr: any) => prev + curr) === 1))
             if(btnID === id){
-                setCart(downitem)
-                localStorage.setItem('cart-products', JSON.stringify(downitem))
+                if(!checkifzero){
+                    setCart(downitem)
+                    localStorage.setItem('cart-products', JSON.stringify(downitem))
+                } else if(checkifzero){
+                    console.log('THIS ITEM SHOULD BE REMOVED')
+                    deleteItem(id)
+                }
         }
+        //if quantity 0 it deletes the item
     }
 
     const deleteItem = (id: any) =>{
@@ -78,24 +100,6 @@ const Cart = ({product, cartitem}: Props) => {
         localStorage.setItem('cart-products', JSON.stringify(array))
         setCart(array)
     }
-
-    // let checkQuantity = cart.map((cart: any) => cart.cartQuantity )
-    // console.log(checkQuantity)
-
-    // if( checkQuantity.reduce((prev: any, curr: any) => prev + curr, -2) === 0){
-    //     console.log('i am 0')
-    //     cart.splice()
-    //     // let items = JSON.parse(cartStorage); // updated
-    //     // for (var i =0; i< items.length; i++) {
-    //     //      items = JSON.parse(items[i]);
-    //     //     if (items.cartQuantity == 0) {
-    //     //         items.splice(i, 1);
-    //     //     }
-    //     // }
-    //     // items = JSON.stringify(items);
-    //     // localStorage.setItem("cart-products", items) 
-    //     // cart.splice(id)
-    // } 
     
 
     useEffect( () => {
@@ -146,6 +150,7 @@ const Cart = ({product, cartitem}: Props) => {
                                 <button onClick={() => deleteItem(index)}>delete</button>
                                 
                                 </div>
+                                <p>{soldOutMessage}</p>
                             </li>
                         )) : ''}
                         <p data-testid="total">Total: {total} kr</p>

@@ -2,6 +2,10 @@
 
 description coming soon !
 
+### Login
+- username: karin01 
+- password: 12345678
+
 ## User Stories📜
 1. As a user I want to see a list of products so that i can easily decide if I am intrested
 

@@ -141,4 +141,8 @@ describe('cart component', () => {
         const quantity = screen.getByText('Items left: 4')
         expect(quantity).toBeInTheDocument()
     })
+
+    //increase cart quantity
+    //decrease cart quantity
+    //deletes an item
 })

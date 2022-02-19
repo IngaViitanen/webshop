@@ -87,6 +87,7 @@ const Details = ({details, item, updateProduct, id}: Props) => {
             } catch(e) {
                 console.log('Failed to add item to cart')
             }
+            console.log('..................', cartProduct)
         } 
         // else if(storage && isItemInCart){
         //     try{
