@@ -32,7 +32,7 @@ describe('cart component', () => {
     
 
     it('shows the initially empty cart after user clicks on the logo', () => {
-        render(<Cart product={[products]} cartitem={cartitem} />)
+        render(<Cart product={products} cartitem={cartitem} />)
         const button = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
         userEvent.click(button)
         
@@ -70,7 +70,7 @@ describe('cart component', () => {
         //         )
                 
         render(<Details  details={products} id={products.id} updateProduct={(updated: Products) => updated} item={cartitem}/>)
-        render(<Cart product={[products]} cartitem={cartitem}/>)
+        render(<Cart product={products} cartitem={cartitem}/>)
         const button = screen.getByRole('button', {name: 'Add to cart'})
         userEvent.click(button)
 
@@ -88,7 +88,7 @@ describe('cart component', () => {
 
 
     it('shows the total price: 0kr if the cart is empty', () => {
-        render(<Cart product={[products]} cartitem={cartitem}/>)
+        render(<Cart product={products} cartitem={cartitem}/>)
         const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
         userEvent.click(cartButton)
 
@@ -105,7 +105,7 @@ describe('cart component', () => {
         // console.log('STORAGE:::::::', localStorage.setItem('cart-products', JSON.stringify(products)))
         // render(<ProductList/>)
         render(<Details  details={products} id={products.id} updateProduct={(updated: Products) => updated} item={cartitem}/>)
-        render(<Cart product={[products]} cartitem={cartitem}/>)
+        render(<Cart product={products} cartitem={cartitem}/>)
         
         // const items = screen.getAllByRole('listitem')
         // userEvent.click(items[0])

@@ -5,7 +5,7 @@ import bigLogo from "../images/logo.png"
 import "./header.css"
 import Login from "../components/user/Login"
 
-const Header = (products: Products, cartitem: CartItem) => {
+const Header = (product: Products, cartitem: CartItem) => {
     const [loggedin, setLoggedin] = useState<boolean>(false)
     const [userStorage, setUserStorage] = useState(JSON.parse(localStorage.getItem('login') || '{}' ))
 
@@ -24,7 +24,7 @@ const Header = (products: Products, cartitem: CartItem) => {
             <img id="logo" src={bigLogo} alt="logo made by Inga Viitanen" height="32px"/>
             <div className="cartButtons">
             <Login loggedin={loggedin} setLoggedin={setLoggedin}/>
-            <Cart product={[products]} cartitem={cartitem} />
+            <Cart product={product} cartitem={cartitem} />
             </div>
         </header>
     )
