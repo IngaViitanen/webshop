@@ -21,12 +21,12 @@
     justify-content: space-between;
 }
 
-.add{
+/* .add{
     display: flex;
     min-width: 150px;
     flex-direction: row;
     justify-content: flex-end;
-}
+} */
 
 #card-img{
     border-radius: 2px;

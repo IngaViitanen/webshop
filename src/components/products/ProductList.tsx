@@ -120,7 +120,7 @@ const data: Products[] = [
 const ProductList = () => {
     const [productsData, setProductsData] = useState<Products[]>(data)
     const [cartitem, setCartitem] = useState<CartItem>()
-    const {products, setProducts} = useContext(MyGlobalContext)
+    // const {products, setProducts} = useContext(MyGlobalContext)
     const [searchVal, setSearchVal] = useState('')
     const [showDet, setShowDet] = useState(false)
     const [showList, setShowList] = useState(true)
@@ -130,37 +130,44 @@ const ProductList = () => {
     const updateProduct = (updated: Products) => {
         console.log('update product....', updated)
 
-        setProductsData(
-        productsData.map((p) => p.id === updated.id ? updated : p) 
-        )
-        // localStorage.setItem('products', JSON.stringify(productsData))
+        const array = [...productsData]
+        let checkUpdated = array.map((p) => p.id === updated.id ? updated : p) 
+        if(checkUpdated){
+            setProductsData(checkUpdated)
+            localStorage.setItem('products', JSON.stringify(checkUpdated))
+            console.log('.......................', productsData)
+        }
         
+        // localStorage.getItem('products')
     }
 
-    useEffect( () => {
-        localStorage.setItem('products', JSON.stringify(productsData))
-        setProductsData(productsData)
-        console.log(productsData)
-    }, [productsData])
+   
 
     console.log("products are..........", productsData)
+    // console.log("products are..........", productsData)
    
 
     useEffect( () => {
-        let storage: [] = []
+        let storage: Products[] = []
         const allProducts = localStorage.getItem('products')
         if (allProducts !== null) {
             try {
                 storage = JSON.parse(allProducts)
-                // setQuant(JSON.parse(localStorage.getItem('products') || '').quantity)
-                // console.log('.......................',quant)
+                console.log('USEEFFECT', storage)
                 setProductsData(storage)
-                setProducts(storage)
+                // setProducts(storage)
             } catch (e) { console.log('error') }
-        }else{
-            localStorage.setItem('cart-products', JSON.stringify(productsData))
         }
-	}, [setProductsData])
+        // else{
+        //     localStorage.setItem('products', JSON.stringify(productsData))
+        // }
+	}, [])
+
+    useEffect( () => {
+        localStorage.setItem('products', JSON.stringify(productsData))
+        // setProductsData(productsData)
+        // console.log(productsData)
+    }, [productsData])
 
     const detailsHandler = (item: any, id: Products['id']) => {
         console.log(item)
@@ -184,7 +191,7 @@ const ProductList = () => {
 
     
     return (
-    <div>  
+    <div className="site-layout">  
         {showList ? (
         <div>
         <input id="searchBar" type="text" placeholder="Search..." onChange={(e) => setSearchVal(e.target.value)}/> 
@@ -200,7 +207,7 @@ const ProductList = () => {
             }
         }).map((val: any) => {
             return (
-                <ul key={val.id} onClick={() => detailsHandler(productsData, val.id)} data-testid="toDetails">
+                <ul key={val.id} onClick={() => detailsHandler(productsData, val.id)} data-testid="toDetails"className="toDetails">
                     <Card key={val.id} product={[val]} q={val.quantity} whenClick={(id) => setChosenId(id)} />
                 </ul>
             )
@@ -212,9 +219,9 @@ const ProductList = () => {
 
         {showDet ? 
         (
-            <div>
-                <div>
-                    <button onClick={goBackToList}>back</button>
+            <div id="detail">
+                <div className="gobackbtn">
+                    <button className="back" onClick={goBackToList}>⬅ GO BACK</button>
                 </div>
                 <Details details={chosenProduct as Products} id={chosenId} updateProduct={updateProduct} item={cartitem as CartItem} />
             </div>

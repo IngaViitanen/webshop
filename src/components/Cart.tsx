@@ -32,6 +32,7 @@ const Cart = ({product, cartitem}: Props) => {
             
             if( cartTotal.reduce((prev: any, curr: any) => prev + curr, -1) === -1 ){
                 setMessage('Your cart is empty')
+                setTotal(0)
             } else{
     
                 let totalOfOneItem = cart?.map((cart:any) => { return {...cart, totalPrice: cart.price * cart.cartQuantity} })
@@ -74,21 +75,34 @@ const Cart = ({product, cartitem}: Props) => {
         console.log(downitem)
 
         let checkQuantity = cart.map((cart: any) => cart.cartQuantity )
+        console.log(checkQuantity)
 
-        let checkifzero = checkQuantity.reduce((prev: any, curr: any) => prev + curr) === 1
-        console.log(checkifzero)
+        let checkifzero = checkQuantity.reduce((prev: any, curr: any) => prev - curr) === -1
+        console.log(checkifzero) // loops through all to see if there prev value - current value is 0 instead of one item
         // let checkQuantity = cart.map((cart: any) => cart.cartQuantity )
         // console.log(( checkQuantity.reduce((prev: any, curr: any) => prev + curr) === 1))
             if(btnID === id){
-                if(!checkifzero){
+                if(btnID === id && !checkifzero){
                     setCart(downitem)
                     localStorage.setItem('cart-products', JSON.stringify(downitem))
-                } else if(checkifzero){
+                } else if(btnID === id && checkifzero){
                     console.log('THIS ITEM SHOULD BE REMOVED')
-                    deleteItem(id)
+                    console.log(id)
+                    deleteIfZero(id)
+                    // if not work set message insted to be 'item needs to have a minimum value of one'
                 }
         }
         //if quantity 0 it deletes the item
+    }
+
+    const deleteIfZero = (id: any) => {
+        let array= [...cart]
+        let index = id
+
+        // if(btnID === id){
+            array.splice(index, 1)
+            setCart(array)
+        // }
     }
 
     const deleteItem = (id: any) =>{

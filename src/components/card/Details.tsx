@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { CartItem, Products } from "../../models/Products";
 import {MyGlobalContext} from '../../context/Context'
+import './details.css'
 
 interface Props{
     details: Products
@@ -29,6 +30,7 @@ const Details = ({details, item, updateProduct, id}: Props) => {
             //  console.log('CARTITEMCOPY::::::', cartitemCopy)
 
             //  setCart((cartArray: CartItem[]) => {
+            const productCopy = {...details, quantity: details.quantity -1}
 
             const storeCartItem = {...detail, cartQuantity: +1, quantity: detail.quantity -1}
 
@@ -42,39 +44,47 @@ const Details = ({details, item, updateProduct, id}: Props) => {
                 if(!isItemInCart){
                     setCart(newCartArr)
                     storeCart(storeCartItem)
+                    setDetail(productCopy)
+                    updateProduct(productCopy)
+                    updateStorage(productCopy)
                     console.log('new item in cart')
                 } else if(isItemInCart){
                     console.log('found matching item')
                     setCart(() => {
                        return cart?.map((cart:any) => cart.id === detail.id ? {...cart, cartQuantity: cart.cartQuantity +1} : cart) 
                     })
-                    storeCart({...cart, cartQuantity: cart.cartQuantity +1} )
+                    storeCart({...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.quantity -1} )
+                    setDetail(productCopy)
+                    updateProduct(productCopy)
+                    updateStorage(productCopy)
                     // console.log(storeCart)
                 }            
             
-            const productCopy = {...details, quantity: details.quantity -1}
-            setDetail(productCopy)
-            updateProduct(productCopy)
+           
+            // setDetail(productCopy)
+            // updateProduct(productCopy)
         }
-
-        
+      
     }
 
-    // const updateStorage = (product: Products) => {
-    //     let storage: [] = []
-    //     const products = localStorage.getItem('products')
-    //     if (products !== null) {
-    //         try {
-    //             storage = JSON.parse(products)
-    //             localStorage.setItem('products', JSON.stringify(productsData))
-    //         } catch (e) { console.log('error') }
-    //     }
-    // }
+    const updateStorage = (product: Products) => {
+        let storage: Array<object> = []
+        const products = localStorage.getItem('products')
+        if (products !== null) {
+            try {
+                storage = JSON.parse(products)
+                console.log(storage)
+                localStorage.setItem('products', JSON.stringify(storage))
+            } catch (e) { console.log('error') }
+        }
+        else{
+            localStorage.setItem('products', JSON.stringify(product))
+        }
+    }
 	
 
     const storeCart = (item: any) => {
         let cartProduct: Array<object> | null = []
-        // let matching: Array<object>
         let storage = localStorage.getItem('cart-products')
         const isItemInCart = cart?.find((cart:any) => cart.id === detail.id ) 
         console.log(isItemInCart)
@@ -116,26 +126,31 @@ const Details = ({details, item, updateProduct, id}: Props) => {
     
 
     return(
-        <div>
+        <div id="detailpage">
             
-                <div data-testid="details">
+                <div data-testid="details" className="details">
                    
-                   <img src={detail.image} alt={detail.productName} height="160px"/>
-                    
-                    <p>{detail.productName}</p>
-                    <p>{detail.description}</p>
+                   <img className="detailsIMG" src={detail.image} alt={detail.productName} height="190px"/>
+
+                   <div className="mediaquery-layout">
+                    <div className="layout">
+                    <p className="name">{detail.productName} - {detail.description}</p>
+                    {/* <p className="description">{detail.description}</p> */}
+                    <p className="price">{detail.price} SEK</p>
                     
                     {detail.facts.map((fact: any) => ( 
-                        <p key={fact}>{fact}</p>
+                        <p className="fact" key={fact}>{fact}</p>
                     ))} 
 
-                    <p>{detail.price}:-</p>
-                    <p>Items left: {detail.quantity}</p>
+                    <p className="fact">Amount in stock: {detail.quantity}</p>
+                    </div>
 
                     <div className="add">
-                        <button key={detail.id} onClick={() => addToCart(item)}>Add to cart</button>
-                    
+                        <button className="addbtn" key={detail.id} onClick={() => addToCart(item)}>Add to cart</button>
                     </div>
+                   </div>
+                    
+
                 </div>
             
         </div>
