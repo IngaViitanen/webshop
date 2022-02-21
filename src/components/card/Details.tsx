@@ -22,9 +22,9 @@ const Details = ({details, item, updateProduct, id}: Props) => {
     const addToCart = (cartitem: CartItem) => {    
         if(cart !== undefined){
             const productCopy = {...details, quantity: details.quantity -1}
-            const storeCartItem = {...detail, cartQuantity: +1, quantity: detail.quantity -1}
-            const newCartArr = [...cart, storeCartItem]
-            const isItemInCart = cart?.find((cart:any) => cart.id === detail.id ) 
+            const storeCartItem = {...detail,  quantity: detail.quantity -1}
+            const newCartArr = [...cart, {ogProduct: storeCartItem, cartQuantity: +1}]
+            const isItemInCart = cart.find((cart) => cart.ogProduct.id === detail.id ) 
             console.log(isItemInCart)
 
                 if(!isItemInCart){
@@ -36,21 +36,24 @@ const Details = ({details, item, updateProduct, id}: Props) => {
                 }
                 else if(isItemInCart){
                     console.log('found matching item')
-                    setCart(() => {
-                       return cart?.map((cart:any) => cart.id === detail.id ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.quantity -1} : cart) 
-                    })
-                    storeCart({...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.quantity -1} )
+                    const og = {...detail, quantity: detail.quantity -1}
+                    // console.log({...ogProduct})
+                    setCart(
+                        cart.map((cart) => cart.ogProduct.id === detail.id ? {...cart, cartQuantity: cart.cartQuantity +1, ogProduct: og} : cart) 
+                    )
+                    console.log(cart.map((cart) => cart.ogProduct.id === detail.id ? {...cart, cartQuantity: cart.cartQuantity +1, ogProduct: og} : cart) )
+                    storeCart(cart.map((cart) => cart.ogProduct.id === detail.id ? {...cart, cartQuantity: cart.cartQuantity +1, ogProduct: og} : cart) )
                     setDetail(productCopy)
                     updateProduct(productCopy)
-                }            
-        }  
-    }
+                }     
+            }  
+        }    
 	
 
     const storeCart = (item: any) => {
         let cartProduct: Array<object> | null = []
         let storage = localStorage.getItem('cart-products')
-        const isItemInCart = cart?.find((cart:any) => cart.id === detail.id ) 
+        const isItemInCart = cart.find((cart) => cart.ogProduct.id === detail.id ) 
         console.log(isItemInCart)
 
         if(storage && !isItemInCart){

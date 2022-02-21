@@ -79,18 +79,6 @@ describe('searchbar', () => {
         const notMatching = within(items[5]).queryByText('Sunnies')
         expect(notMatching).not.toBeInTheDocument()
     })
-
-    // it('if nothing matches the search the message "sorry we could not find what you are searching for"', () => {
-    //     render(<ProductList/>)
-    //     const input = screen.getByPlaceholderText('Search...')
-
-    //     userEvent.type(input as HTMLElement, 'gerk')
-    //     expect(input).toHaveValue('gerk')
-
-    //     const message = screen.queryByRole('paragraph', {name: 'Sorry we could not find what you are searching for :('})
-    //     expect(message).toBeInTheDocument()
-        
-    // })
 })
 
 describe('details component', () => {

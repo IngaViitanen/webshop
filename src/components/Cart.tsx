@@ -1,7 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, ContextType } from "react";
 import { MyGlobalContext } from "../context/Context";
 import { CartItem, Products } from "../models/Products";
 import shoppingBag from "../images/shopping-bag.png"
+import trashCan from "../images/garbage.png"
+
 interface Props {
     product: Products
     cartitem: CartItem
@@ -19,22 +21,20 @@ const Cart = ({product, cartitem}: Props) => {
 
 
     useEffect(() => {
-        if(cart !== undefined){
-            let cartTotal = cart.map((cart: any) => cart.price )
+            let cartTotal = cart?.map((cart) => cart.ogProduct.price )
             
-            if( cartTotal.reduce((prev: any, curr: any) => prev + curr, -1) === -1 ){
+            if( cartTotal?.reduce((prev, curr) => prev + curr, -1) === -1 ){
                 setMessage('Your cart is empty')
                 setTotal(0)
             }
             else{
-                let totalOfOneItem = cart?.map((cart:any) => { return {...cart, totalPrice: cart.price * cart.cartQuantity} })
-                let newPrice = totalOfOneItem.map((cart: any) => cart.totalPrice)
-                let sumOfEverything = newPrice.reduce((prev:any, curr: any) => prev + curr)
+                let totalOfOneItem = cart?.map((cart) => { return {...cart, totalPrice: cart.ogProduct.price * cart.cartQuantity} })
+                let newPrice = totalOfOneItem?.map((cart: any) => cart.totalPrice)
+                let sumOfEverything = newPrice?.reduce((prev:any, curr: any) => prev + curr)
                 
                 setMessage('')
                 setTotal(sumOfEverything)
             }
-        }
     })
 
 
@@ -44,7 +44,7 @@ const Cart = ({product, cartitem}: Props) => {
                 try {
                     storage = JSON.parse(cartStorage)
                     setCart(storage)
-                } catch (e) { console.log('error') }
+                } catch (e) { console.log('unable to get storage') }
             } 
     }, [])
 
@@ -55,25 +55,29 @@ const Cart = ({product, cartitem}: Props) => {
         
 
     const increaseItem = (btnID: any, id: any) => {
-        const increase = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.quantity -1} : cart)
-        const foundItem = cart.find((item: any) => item.id === id);
-        console.log(foundItem?.quantity > 1)
+        // product = 
+        // const ogProductCopy = cart.map(c => c.ogProduct)
+        // const ogog = ogProductCopy.map(p => p.quantity -1)
+        console.log(cart.map((cart) => cart.ogProduct.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.ogProduct.quantity -1 } : cart))
+        const increase = cart.map((cart) => cart.ogProduct.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.ogProduct.quantity -1 } : cart)
+        const foundItem = cart.find((item) => item.ogProduct.id === id);
+        // console.log(foundItem!.ogProduct.quantity > 1)
         
-        if(foundItem?.quantity > 0){      
+        if(foundItem!.ogProduct.quantity > 0){      
             setCart(increase)
             localStorage.setItem('cart-products', JSON.stringify(increase))       
         }else{
-            setSoldOutMessage("Oh no! We don't have any more of " + foundItem.productName + " in stock 😢")
+            setSoldOutMessage("Oh no! We don't have any more of " + foundItem!.ogProduct.productName + " in stock 😢")
         } 
     }
 
 
     const decreaseItem = (btnID: any, id: any, product: Products) => {
-        const decrease = cart?.map((cart:any) => cart.id === btnID ? {...cart, cartQuantity: cart.cartQuantity -1, quantity: cart.quantity +1} : cart)
-        const foundItem = cart.find((item: any) => item.id === id);
-        console.log(foundItem?.cartQuantity > 1)
+        const decrease = cart.map((cart) => cart.ogProduct.id === btnID ? {...cart, cartQuantity: cart.cartQuantity -1, quantity: cart.ogProduct.quantity +1} : cart)
+        const foundItem = cart.find((item) => item.ogProduct.id === id);
+        console.log(foundItem!.cartQuantity > 1)
 
-        if(foundItem?.cartQuantity > 1){
+        if(foundItem!.cartQuantity > 1){
             setCart(decrease)
             localStorage.setItem('cart-products', JSON.stringify(decrease))
             setSoldOutMessage('')
@@ -85,7 +89,7 @@ const Cart = ({product, cartitem}: Props) => {
 
 
     const deleteItem = (id: any) => {
-        let filteredCart = cart.filter(function(c: any) { return c.id !== id})
+        let filteredCart = cart.filter(function(c) { return c.ogProduct.id !== id})
         console.log(filteredCart)
         setCart(filteredCart)
     }
@@ -111,19 +115,21 @@ const Cart = ({product, cartitem}: Props) => {
                     <p>{message}</p>
                     <div data-testid="cart">
 
-                        {cart ? cart.map((item: any) => (
-                            <li className="c-list" key={item.id}>
-                                <p className="p">{item.productName}</p>
+                        { cart?.map((item) => (
+                            <li className="c-list" key={item.ogProduct.id}>
+                                <img src={item.ogProduct.image} alt={item.ogProduct.image} height="60px"/>
+                                <p className="p">{item.ogProduct.productName}</p>
                                 <div id="quantity">
-                                <p className="p">{item.price}:-</p>
-                                <button onClick={() => decreaseItem(item.id, item.id, product)} >-</button>
+                                <p className="p">{item.ogProduct.price} SEK</p>
+                                <p className="btn" onClick={() => decreaseItem(item.ogProduct.id, item.ogProduct.id, product)} >-</p>
                                 <p className="p">{item.cartQuantity}</p>
-                                <button disabled={false} onClick={() => increaseItem(item.id, item.id)} >+</button>
-                                <button onClick={() => deleteItem(item.id)}>delete</button>                               
+                                <p className="btn" onClick={() => increaseItem(item.ogProduct.id, item.ogProduct.id)} >+</p>
+                                {/* <button className="deleteBTN" onClick={() => deleteItem(item.id)}>X</button>   */}
+                                <img src={trashCan} alt="Trash icons created by Freepik - Flaticon" height="25px" className="deleteBTN" onClick={() => deleteItem(item.ogProduct.id)}/>                             
                                 </div>
                             </li>
-                        )) : ''}
-                        
+                        )) }
+
                         <p>{soldOutMessage}</p>
                         <p data-testid="total">Total: {total} kr</p>
                         <button>PURCHASE</button>

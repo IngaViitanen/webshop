@@ -1,7 +1,6 @@
-import React, { useContext, createContext, useState } from 'react'
+import React, { createContext, useState } from 'react'
 import { CartItem, Products } from '../models/Products'
 
-    export const MyGlobalContext = createContext<Products[] | any>([])
 
     export type GlobalContext = {
         products: Products[]
@@ -10,6 +9,7 @@ import { CartItem, Products } from '../models/Products'
         setCart: (cartArray: CartItem[]) => void
     }
 
+    export const MyGlobalContext = createContext<GlobalContext>({} as GlobalContext) // | any> []
     
     
     export default function ContextProvider (props: any) {
@@ -17,6 +17,7 @@ import { CartItem, Products } from '../models/Products'
             const [cart, setCart] = useState<CartItem[]>([] as CartItem[])
             return (
                 <MyGlobalContext.Provider value={{products, setProducts, cart, setCart}}>
+                    value={{products, setProducts, cart, setCart}}
                     {props.children}
                 </MyGlobalContext.Provider>
             )

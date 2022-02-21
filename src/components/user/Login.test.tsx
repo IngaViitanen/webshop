@@ -7,10 +7,6 @@ import userEvent from '@testing-library/user-event'
 
 describe('login component', () => { 
 
-    it('renders without crashing', () => {
-        render(<Login loggedin={false} setLoggedin={() => void ''} />)
-    })
-
     it('gives inputfields classname invalid when filled in with incorrect credentials', () => {
         render(<Login loggedin={false} setLoggedin={(login: boolean) => login} />)
 
@@ -28,5 +24,16 @@ describe('login component', () => {
 
         expect(userinput).toHaveClass('invalid')
         expect(pwdinput).toHaveClass('invalid')
+    })
+
+    it('shows logout button and the users name when signed in', () => {
+        render(<Login loggedin={true} setLoggedin={(login: boolean) => login} />)
+        const button = screen.getByAltText("Login icons created by Good Ware - Flaticon" )
+        userEvent.click(button)
+        const user = screen.getByText('Logged in as: Karin Nyberg')
+        expect(user).toBeInTheDocument()
+        
+        const logoutBtn = screen.getByRole('button', { name: 'logout'})
+        expect(logoutBtn).toBeInTheDocument()
     })
 })
