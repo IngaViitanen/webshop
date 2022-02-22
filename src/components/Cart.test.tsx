@@ -9,6 +9,8 @@ import ProductList from './products/ProductList'
 
 describe('cart component', () => {
 
+    const deleteItemMock = jest.fn()
+
     const product: Products = {
         id: 'idid1',
         image: '',
@@ -24,11 +26,21 @@ describe('cart component', () => {
     }
     
     const cartitem: CartItem = {
-        ogProduct: product,
-        cartQuantity: 1
+        id: 'idid1',
+        image: '',
+        productName: 'Icy Blue',
+        description: 'Ski goggles with an icy blue color hue. Perfect for skiing in any weather and great for protecting your eyes from the snow. Ski fast and look amazing!',
+        price: 299,
+        facts: [
+                'Color: Icy Blue',
+                'Size: adjustable',
+                'UV-protection: yes'
+                ],
+        quantity: 4,
+        cartQuantity: 2
     }
 
-    const products = [{
+    const productsArr = [{
         id: 'idid1',
     image: '',
     productName: 'Icy Blue',
@@ -42,20 +54,27 @@ describe('cart component', () => {
     quantity: 5,
     }]
 
-    const cart = [{
-        ogProduct: product,
-        cartQuantity: 1
+    const cartArr = [{
+        id: 'idid1',
+        image: '',
+        productName: 'Icy Blue',
+        description: 'Ski goggles with an icy blue color hue. Perfect for skiing in any weather and great for protecting your eyes from the snow. Ski fast and look amazing!',
+        price: 299,
+        facts: [
+                'Color: Icy Blue',
+                'Size: adjustable',
+                'UV-protection: yes'
+                ],
+        quantity: 4,
+        cartQuantity: 2
     }]
     
-    const context: GlobalContext = {products: products , setProducts: (product) => product, cart: cart, setCart: (cart) => cart }
-
-    // jest.spyOn(Object.getPrototypeOf(localStorage), 'getItem')
-	// Object.setPrototypeOf(window.localStorage.getItem, jest.fn( () => { cartitem || []} ))
+    const context: GlobalContext = {products: productsArr , setProducts: (product) => product, cart: cartArr, setCart: (cart) => cart }
 
     
 
     it('shows the initially empty cart and a total of 0 when user clicks on the logo', () => {
-        render(<Cart product={product} cartitem={cartitem} />)
+        render(<Cart product={product} cartitem={cartitem} deleteItem={deleteItemMock}/>)
         const button = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
         userEvent.click(button)
         
@@ -71,11 +90,11 @@ describe('cart component', () => {
     })
 
 
-    it('shows the added product and updates the price in the cart ', () => {
+    it('shows the added products and updates the price in the cart ', () => {
         render(
         <MyGlobalContext.Provider value={context}>
             <Details  details={product} id={product.id} updateProduct={(updated: Products) => updated} item={cartitem}/> 
-            <Cart  product={product} cartitem={cartitem}/>
+            <Cart  product={product} cartitem={cartitem} deleteItem={deleteItemMock}/>
         </MyGlobalContext.Provider>
         )
 
@@ -85,15 +104,10 @@ describe('cart component', () => {
         const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
         userEvent.click(cartButton)
     
-        const cartelem = screen.getByText('Your cart')
-        expect(cartelem).toBeInTheDocument()
-        const cartItems = screen.getByTestId('cart')
-        expect(cartItems).toBeInTheDocument()
-    
-        const listelem = within(cartItems).getByText('Icy Blue')
+        const listelem = screen.getByText('Icy Blue')
         expect(listelem).toBeInTheDocument()
 
-        const total = screen.getByText('Total: 299 kr')
+        const total = screen.getByText('Total: 598 kr')
         expect(total).toBeInTheDocument()
     })
 
@@ -102,7 +116,7 @@ describe('cart component', () => {
         render(
         <MyGlobalContext.Provider value={context}>
             <Details  details={product} id={product.id} updateProduct={(updated: Products) => updated} item={cartitem}/> 
-            <Cart  product={product} cartitem={cartitem}/>
+            <Cart  product={product} cartitem={cartitem} deleteItem={deleteItemMock}/>
         </MyGlobalContext.Provider>
         )
 
@@ -113,13 +127,60 @@ describe('cart component', () => {
         expect(quantity).toBeInTheDocument()
     })
 
-    // + and - buttons
+    it('removes an item when user clicks on the delete button', () => {
+        render(
+        <MyGlobalContext.Provider value={context}> 
+            <Cart  product={product} cartitem={cartitem} deleteItem={deleteItemMock}/>
+        </MyGlobalContext.Provider>
+        )
+
+        const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
+        userEvent.click(cartButton)
+        
+        const delBtn = screen.getByAltText('Trash icons created by Freepik - Flaticon')
+        userEvent.click(delBtn)
+        
+        expect(deleteItemMock).toHaveBeenCalled()
+    })
+
+    it('increases cartQuantity when user clicks the + button', () => {
+        render(
+            <MyGlobalContext.Provider value={context}> 
+                <Cart  product={product} cartitem={cartitem} deleteItem={deleteItemMock}/>
+            </MyGlobalContext.Provider>
+        )
+
+        const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
+        userEvent.click(cartButton)
+
+        const increase = screen.getByText('+')
+        userEvent.click(increase)
+
+        const quantity = screen.getByText('2')
+        expect(quantity).toBeInTheDocument()
+    })
+
+    it('decreases cartQuantity when user clicks - button', () => {
+        render(
+            <MyGlobalContext.Provider value={context}> 
+                <Cart  product={product} cartitem={cartitem} deleteItem={deleteItemMock}/>
+            </MyGlobalContext.Provider>
+        )
+
+        const cartButton = screen.getByAltText('Shopping bag icons created by CreativeCons - Flaticon')
+        userEvent.click(cartButton)
+
+        const increase = screen.getByText('-')
+        userEvent.click(increase)
+
+        const quantity = screen.getByText('2')
+        expect(quantity).toBeInTheDocument()
+    })
+
+    // delete test
 
 
-
-    // stylea varukorg
-    // lägg till 'please login to make a purchase' när man trycker på purchase
-    // när man är inloggad 'thank you for your purchase' 'DISCLAIMER: this is not a real purchase'
+    // stylea purchase knappen
     // ladda upp till heroku
 
 })

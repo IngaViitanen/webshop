@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, ContextType } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { MyGlobalContext } from "../context/Context";
 import { CartItem, Products } from "../models/Products";
 import shoppingBag from "../images/shopping-bag.png"
@@ -7,28 +7,28 @@ import trashCan from "../images/garbage.png"
 interface Props {
     product: Products
     cartitem: CartItem
+    deleteItem: (id: string) => void
 }
 
-const Cart = ({product, cartitem}: Props) => {
+const Cart = ({product, cartitem, deleteItem}: Props) => {
     const [showCart, setShowCart] = useState(false)
     const {cart, setCart} = useContext(MyGlobalContext)
-    const [listProduct, setListProduct] = useState(product)
-
-    const [cartStorage, setCartStorage] = useState(localStorage.getItem('cart-products') || '[]')
     const [total, setTotal] = useState(0)
     const [message, setMessage] = useState('')
     const [soldOutMessage, setSoldOutMessage ] = useState('')
-
+    const [loginMessage, setLoginMessage] = useState('')
+    
+    const cartStorage = localStorage.getItem('cart-products') || '[]'
 
     useEffect(() => {
-            let cartTotal = cart?.map((cart) => cart.ogProduct.price )
+            let cartTotal = cart?.map((cart) => cart.price )
             
             if( cartTotal?.reduce((prev, curr) => prev + curr, -1) === -1 ){
                 setMessage('Your cart is empty')
                 setTotal(0)
             }
             else{
-                let totalOfOneItem = cart?.map((cart) => { return {...cart, totalPrice: cart.ogProduct.price * cart.cartQuantity} })
+                let totalOfOneItem = cart?.map((cart) => { return {...cart, totalPrice: cart.price * cart.cartQuantity} })
                 let newPrice = totalOfOneItem?.map((cart: any) => cart.totalPrice)
                 let sumOfEverything = newPrice?.reduce((prev:any, curr: any) => prev + curr)
                 
@@ -54,27 +54,22 @@ const Cart = ({product, cartitem}: Props) => {
     }, [cart])
         
 
-    const increaseItem = (btnID: any, id: any) => {
-        // product = 
-        // const ogProductCopy = cart.map(c => c.ogProduct)
-        // const ogog = ogProductCopy.map(p => p.quantity -1)
-        console.log(cart.map((cart) => cart.ogProduct.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.ogProduct.quantity -1 } : cart))
-        const increase = cart.map((cart) => cart.ogProduct.id === btnID ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.ogProduct.quantity -1 } : cart)
-        const foundItem = cart.find((item) => item.ogProduct.id === id);
-        // console.log(foundItem!.ogProduct.quantity > 1)
+    const increaseItem = (id: any) => {
+        const foundItem = cart.find((item) => item.id === id)
+        const increase = cart.map((cart) => cart.id === id ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.quantity -1} : cart)
         
-        if(foundItem!.ogProduct.quantity > 0){      
+        if(foundItem!.quantity > 0){      
             setCart(increase)
             localStorage.setItem('cart-products', JSON.stringify(increase))       
         }else{
-            setSoldOutMessage("Oh no! We don't have any more of " + foundItem!.ogProduct.productName + " in stock 😢")
+            setSoldOutMessage("Oh no! We don't have any more of " + foundItem!.productName + " in stock 😢")
         } 
     }
 
 
-    const decreaseItem = (btnID: any, id: any, product: Products) => {
-        const decrease = cart.map((cart) => cart.ogProduct.id === btnID ? {...cart, cartQuantity: cart.cartQuantity -1, quantity: cart.ogProduct.quantity +1} : cart)
-        const foundItem = cart.find((item) => item.ogProduct.id === id);
+    const decreaseItem = ( id: any) => {
+        const decrease = cart.map((cart) => cart.id === id ? {...cart, cartQuantity: cart.cartQuantity -1, quantity: cart.quantity +1} : cart)
+        const foundItem = cart.find((item) => item.id === id)
         console.log(foundItem!.cartQuantity > 1)
 
         if(foundItem!.cartQuantity > 1){
@@ -88,10 +83,21 @@ const Cart = ({product, cartitem}: Props) => {
     }
 
 
-    const deleteItem = (id: any) => {
-        let filteredCart = cart.filter(function(c) { return c.ogProduct.id !== id})
-        console.log(filteredCart)
-        setCart(filteredCart)
+    const pleaseLogin = () => {
+        let loginStorage: {} = {}
+        if(JSON.parse(localStorage.getItem('loggedin') || '{}' ) !== null){
+            try{
+                if(loginStorage = JSON.parse(localStorage.getItem('loggedin') || '{}' ).loggedin === true){
+                    if(cart.length === 0){
+                        setLoginMessage('You need to add some awesome goggles to your cart to make a purchase ! 👓')
+                    }else{
+                        setLoginMessage('Thank you for your NOT REAL purchase! 😎 ')
+                    }
+                }else{
+                    setLoginMessage('Please sign in to make a purchase !')
+                }
+            } catch (e) {setLoginMessage('Please sign in to make a purchase !')}
+        }
     }
     
     
@@ -116,23 +122,23 @@ const Cart = ({product, cartitem}: Props) => {
                     <div data-testid="cart">
 
                         { cart?.map((item) => (
-                            <li className="c-list" key={item.ogProduct.id}>
-                                <img src={item.ogProduct.image} alt={item.ogProduct.image} height="60px"/>
-                                <p className="p">{item.ogProduct.productName}</p>
+                            <li className="c-list" key={item.id}>
+                                <img src={item.image} alt={item.image} height="60px"/>
+                                <p className="p">{item.productName}</p>
                                 <div id="quantity">
-                                <p className="p">{item.ogProduct.price} SEK</p>
-                                <p className="btn" onClick={() => decreaseItem(item.ogProduct.id, item.ogProduct.id, product)} >-</p>
+                                <p className="p">{item.price} SEK</p>
+                                <p className="btn" onClick={() => decreaseItem(item.id)} >-</p>
                                 <p className="p">{item.cartQuantity}</p>
-                                <p className="btn" onClick={() => increaseItem(item.ogProduct.id, item.ogProduct.id)} >+</p>
-                                {/* <button className="deleteBTN" onClick={() => deleteItem(item.id)}>X</button>   */}
-                                <img src={trashCan} alt="Trash icons created by Freepik - Flaticon" height="25px" className="deleteBTN" onClick={() => deleteItem(item.ogProduct.id)}/>                             
+                                <p className="btn" onClick={() => increaseItem(item.id)} >+</p>
+                                <img src={trashCan} alt="Trash icons created by Freepik - Flaticon" height="25px" className="deleteBTN" onClick={() => deleteItem(item.id)}/>                             
                                 </div>
                             </li>
                         )) }
 
                         <p>{soldOutMessage}</p>
                         <p data-testid="total">Total: {total} kr</p>
-                        <button>PURCHASE</button>
+                        <button onClick={() => pleaseLogin()}>PURCHASE</button>
+                        <p>{loginMessage}</p>
                     </div>
                         
                 </ul>

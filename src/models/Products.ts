@@ -9,6 +9,13 @@ export interface Products {
 }
 
 export interface CartItem {
-    ogProduct: Products
+    // ogProduct: Products
+    id: string
+    image: string
+    productName: string
+    description: string
+    facts: string[]
+    price: number
+    quantity: number
     cartQuantity: number
 }

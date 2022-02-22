@@ -8,13 +8,14 @@ import {Products, CartItem} from "./models/Products"
 function App() {
   const [products, setProducts] = useState<Products[]>([] as Products[])
   const [cart, setCart] = useState<CartItem[]>([] as CartItem[]) 
+  const [product, setProduct] = useState<Products>({} as Products)
   console.log(cart)
 
   const values: GlobalContext = {products, setProducts, cart, setCart}
   return (
     <MyGlobalContext.Provider value={ values }>
     <div className="App" >
-      <Header id={''} image={''} productName={''} description={''} facts={[]} price={0} quantity={0} />
+      <Header product={product} />
       <ProductList />
     </div>
     </MyGlobalContext.Provider>
