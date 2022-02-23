@@ -113,12 +113,15 @@ h2{
     flex-direction: column;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1440px) {
+    .dropdown-cart{
+        width: 600px;
+        height: 500px;
+    }
 
-    /* .dropdown-cart{
-        min-width: 600px;
-        min-height: 500px;
-    } */
+}
+
+@media screen and (max-width: 768px) {
 
     #logo {
         height: 22px;
@@ -130,6 +133,19 @@ h2{
   }
 
   @media screen and (max-width: 490px) {
+
+    .dropdown-cart{
+        width: 360px;
+        height: 400px;
+    }
+
+    .c-list{
+        padding: 0.5rem;
+    }
+
+    .p{
+        font-size: 0.8rem;
+    }
 
     .logos{
         height: 40px;
