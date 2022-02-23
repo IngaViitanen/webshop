@@ -20,7 +20,15 @@ function Login({loggedin, setLoggedin}: Props) {
       event.preventDefault()
 
       for( let i = 0; i < UserData.length; i++) {
-        if(UserData[i].username !== username && UserData[i].password !== password){
+        if(UserData[i].username !== username){
+          setValidcss('invalid')
+          setMessage('username or password is incorrect')
+        } 
+        else if(UserData[i].password !== password){
+          setValidcss('invalid')
+          setMessage('username or password is incorrect')
+        }
+        else if(UserData[i].username !== username && UserData[i].password !== password){
             setValidcss('invalid')
             setMessage('username or password is incorrect')
         }
