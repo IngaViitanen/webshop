@@ -1,6 +1,8 @@
-# Jokkes goggle shop👓
+# Jokkes goggle shop🏂
 
-description coming soon !
+Jokkes goggle shop is a demo webshop with a nature theme that sells skigoggles. On the site you can add and remove products from the cart. You can increase or decrease the quantity of a product directly in the cart. You can also search for products by their title. 
+
+This website also has a static user to simulate the feel of a real webshop site where you often have to login to be able to make a purchase.
 
 ### Login
 - username: karin01 
