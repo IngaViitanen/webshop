@@ -6,7 +6,7 @@ A school project where the goal was to build a nature themed webshop with TDD, R
 See the live app here -> https://goggleshop.herokuapp.com/
 
 ## About the app 😎
-Jokkes goggle shop is a fictional webshop that sells skigoggles. On the site you can browse the products and search for them by title and add products to the cart. You can remove products from the cart and also increase or decrease the quantity of a product directly in the cart.  
+Jokkes goggle shop is a fictional webshop that sells ski goggles. On the site you can browse the products and search for them by title and add products to the cart. You can remove products from the cart and also increase or decrease the quantity of a product directly in the cart.  
 
 This website also has a static user to simulate the feel of a real webshop site where you often have to login to be able to make a purchase.
 
