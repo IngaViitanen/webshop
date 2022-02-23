@@ -18,12 +18,10 @@ const Details = ({details, item, updateProduct, id}: Props) => {
 
     const addToCart = (cartitem: CartItem) => {    
         if(cart !== undefined){
-            const productCopy = {...details, quantity: details.quantity -1}
-            const test = {...details, quantity: -1}
+            const productCopy = {...detail, quantity: details.quantity -1}
             const storeCartItem = {...detail,  quantity: detail.quantity -1, cartQuantity: +1}
             const newCartArr = [...cart,  storeCartItem]
             const isItemInCart = cart.find((cart) => cart.id === detail.id ) 
-            console.log(isItemInCart)
 
                 if(!isItemInCart){
                     setCart(newCartArr)
@@ -33,7 +31,6 @@ const Details = ({details, item, updateProduct, id}: Props) => {
                     console.log('new item in cart')
                 }
                 else if(isItemInCart){
-                    console.log('found matching item')
                     if(detail.quantity > 0){
                         setCart(
                             cart.map((cart) => cart.id === detail.id ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: detail.quantity -1} : cart) 
@@ -77,7 +74,7 @@ const Details = ({details, item, updateProduct, id}: Props) => {
             
                 <div data-testid="details" className="details">
                    
-                   <p>{soldOutMessage}</p>
+                   <p className="soldOutMessage">{soldOutMessage}</p>
                    <img className="detailsIMG" src={detail.image} alt={detail.productName} height="190px"/>
 
                    <div className="mediaquery-layout">

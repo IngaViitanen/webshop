@@ -14,13 +14,14 @@ interface Props {
 const Card = ({product, q, whenClick}: Props) => {
     const [products, setProduct ]= useState(product)
     
+    
 
    
 
     return(
         <div>
 
-            {products.map((product: any) => (
+            {products.map((product: Products) => (
                 <li key={product.id} className="card" onClick={(id) => whenClick(product.id)}>
                 <img id="card-img" src={product.image} alt={product.productName} height="160px"/>
                 <div className="card-grid">

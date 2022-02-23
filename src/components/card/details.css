@@ -45,6 +45,15 @@
     background-color: #4c34d4;
 }
 
+.soldOutMessage{
+    background-color: #fff;
+    width: 49%;
+    font-size: 1.5rem;
+    position: fixed;
+    text-align: center;
+    align-self: center;
+}
+
 @media only screen and (max-width: 320px) {
     .detailsIMG{
         height: 160px;

@@ -9,7 +9,6 @@ function App() {
   const [products, setProducts] = useState<Products[]>([] as Products[])
   const [cart, setCart] = useState<CartItem[]>([] as CartItem[]) 
   const [product, setProduct] = useState<Products>({} as Products)
-  console.log(cart)
 
   const values: GlobalContext = {products, setProducts, cart, setCart}
   return (

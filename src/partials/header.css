@@ -34,15 +34,20 @@ h2{
 
 .dropdown-cart{
     background-color: #eeeeee;
-    border: solid 6px #3e0daf;
+    border: solid 3px #3e0daf;
     border-radius: 5px;
     position: fixed;
     right: 100%;
     right: 0;
-    min-width: 600px;
-    min-height: 500px;
-    /* transition: background-color 2s; */
+    width: 390px;
+    height: 500px;
+    overflow: scroll;
+    scroll-behavior: smooth;
 }
+
+.dropdown-cart::-webkit-scrollbar {
+    display: none;
+  }
 
 .cart-list{
     display: flex;
@@ -110,6 +115,11 @@ h2{
 
 @media screen and (max-width: 768px) {
 
+    /* .dropdown-cart{
+        min-width: 600px;
+        min-height: 500px;
+    } */
+
     #logo {
         height: 22px;
     }
@@ -150,3 +160,10 @@ h2{
         height: 38px;
     }
 }
+
+/* @media only screen and (min-width: 600) {
+    .dropdown-cart{
+        width: 300px;
+        height: 200px;
+    }
+} */

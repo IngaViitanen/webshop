@@ -119,8 +119,8 @@ const data: Products[] = [
 
 const ProductList = () => {
     const [productsData, setProductsData] = useState<Products[]>(data)
+    const {products, setProducts} = useContext(MyGlobalContext)
     const [cartitem, setCartitem] = useState<CartItem>()
-    // const {products, setProducts} = useContext(MyGlobalContext)
     const [searchVal, setSearchVal] = useState('')
     const [showDet, setShowDet] = useState(false)
     const [showList, setShowList] = useState(true)
@@ -128,25 +128,16 @@ const ProductList = () => {
     const chosenProduct = productsData.find(product => product.id === chosenId)
     
     const updateProduct = (updated: Products) => {
-        console.log('update product....', updated)
 
         const array = [...productsData]
         let checkUpdated = array.map((p) => p.id === updated.id ? updated : p) 
         if(checkUpdated){
             setProductsData(checkUpdated)
             localStorage.setItem('products', JSON.stringify(checkUpdated))
-            console.log('.......................', productsData)
         }
-        
-        // localStorage.getItem('products')
     }
 
    
-
-    console.log("products are..........", productsData)
-    // console.log("products are..........", productsData)
-   
-
     useEffect( () => {
         let storage: Products[] = []
         const allProducts = localStorage.getItem('products')
@@ -155,23 +146,15 @@ const ProductList = () => {
                 storage = JSON.parse(allProducts)
                 console.log('USEEFFECT', storage)
                 setProductsData(storage)
-                // setProducts(storage)
             } catch (e) { console.log('error') }
         }
-        // else{
-        //     localStorage.setItem('products', JSON.stringify(productsData))
-        // }
 	}, [])
 
     useEffect( () => {
         localStorage.setItem('products', JSON.stringify(productsData))
-        // setProductsData(productsData)
-        // console.log(productsData)
     }, [productsData])
 
     const detailsHandler = (item: any, id: Products['id']) => {
-        console.log(item)
-        console.log(id)
         if(item.key !== id){
             setShowDet(!showDet)
             setShowList(!showList)
@@ -185,7 +168,6 @@ const ProductList = () => {
     const goBackToList = () => {
         setShowDet(!showDet)
         setShowList(!showList)
-        // setProductsData(productsData)
     }
 
 
@@ -198,14 +180,14 @@ const ProductList = () => {
 
         <div className="product-list">
         
-        {productsData.filter((val: any) => {
+        {productsData.filter((val: Products) => {
             if (searchVal === ''){
                 return val
             } 
             else if(val.productName.toLowerCase().includes(searchVal.toLowerCase())){
                 return val
             }
-        }).map((val: any) => {
+        }).map((val: Products) => {
             return (
                 <ul key={val.id} onClick={() => detailsHandler(productsData, val.id)} data-testid="toDetails"className="toDetails">
                     <Card key={val.id} product={[val]} q={val.quantity} whenClick={(id) => setChosenId(id)} />

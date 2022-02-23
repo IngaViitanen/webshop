@@ -13,6 +13,7 @@ interface Props {
 const Cart = ({product, cartitem, deleteItem}: Props) => {
     const [showCart, setShowCart] = useState(false)
     const {cart, setCart} = useContext(MyGlobalContext)
+    const {products, setProducts} = useContext(MyGlobalContext)
     const [total, setTotal] = useState(0)
     const [message, setMessage] = useState('')
     const [soldOutMessage, setSoldOutMessage ] = useState('')
@@ -58,6 +59,16 @@ const Cart = ({product, cartitem, deleteItem}: Props) => {
         const foundItem = cart.find((item) => item.id === id)
         const increase = cart.map((cart) => cart.id === id ? {...cart, cartQuantity: cart.cartQuantity +1, quantity: cart.quantity -1} : cart)
         
+        let productsArr = localStorage.getItem('products') && JSON.parse(localStorage.getItem('products') || '[]')
+        let increasedItem = productsArr?.filter((p: Products) => p.id === id)[0]
+        if(increasedItem !== undefined){
+            increasedItem!.quantity = foundItem!.quantity - 1
+            let increasedIndex = productsArr?.findIndex((p: Products) => p.id === id)
+            const productCopy = productsArr?.slice()
+            productCopy[increasedIndex] = increasedItem
+            localStorage.setItem('products', JSON.stringify(productCopy))
+        }
+
         if(foundItem!.quantity > 0){      
             setCart(increase)
             localStorage.setItem('cart-products', JSON.stringify(increase))       
@@ -71,6 +82,16 @@ const Cart = ({product, cartitem, deleteItem}: Props) => {
         const decrease = cart.map((cart) => cart.id === id ? {...cart, cartQuantity: cart.cartQuantity -1, quantity: cart.quantity +1} : cart)
         const foundItem = cart.find((item) => item.id === id)
         console.log(foundItem!.cartQuantity > 1)
+
+        let productsArr = localStorage.getItem('products') && JSON.parse(localStorage.getItem('products') || '[]')
+        let decreadesedItem = productsArr?.filter((p: Products) => p.id === id)[0]
+        if(decreadesedItem !== undefined){
+            decreadesedItem!.quantity = foundItem!.quantity + 1
+            let decreasedIndex = productsArr?.findIndex((p: Products) => p.id === id)
+            const productCopy = productsArr?.slice()
+            productCopy[decreasedIndex] = decreadesedItem
+            localStorage.setItem('products', JSON.stringify(productCopy))
+        }
 
         if(foundItem!.cartQuantity > 1){
             setCart(decrease)
@@ -92,6 +113,7 @@ const Cart = ({product, cartitem, deleteItem}: Props) => {
                         setLoginMessage('You need to add some awesome goggles to your cart to make a purchase ! 👓')
                     }else{
                         setLoginMessage('Thank you for your NOT REAL purchase! 😎 ')
+                        // Add empty cart function after making a purchase
                     }
                 }else{
                     setLoginMessage('Please sign in to make a purchase !')

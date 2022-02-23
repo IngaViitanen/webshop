@@ -23,11 +23,21 @@ const Header = ({product}: Props, cartitem: CartItem) => {
     useEffect(() => {
         setUserStorage(userStorage)
     }, [loggedin])
+
+    const updateProductsQuantity = (id: string) => {
+        let productsArr = localStorage.getItem('products') && JSON.parse(localStorage.getItem('products') || '[]')
+        let deletedItem = productsArr.filter((p: Products) => p.id === id)[0]
+        deletedItem.quantity = 5
+        let deletedIndex = productsArr.findIndex((p: Products) => p.id === id)
+        const productCopy = productsArr.slice()
+        productCopy[deletedIndex] = deletedItem
+        localStorage.setItem('products', JSON.stringify(productCopy))
+    }
     
-    const deleteItem = (id: any) => {
+    const deleteItem = (id: string) => {
         let filteredCart = cart.filter((c) => { return c.id !== id})
-        console.log(filteredCart)
         setCart(filteredCart)
+        updateProductsQuantity(id)
     }
     
     return (
