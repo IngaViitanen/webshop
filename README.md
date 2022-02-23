@@ -1,6 +1,12 @@
 # Jokkes goggle shop🏂
 
-Jokkes goggle shop is a demo webshop with a nature theme that sells skigoggles. On the site you can add and remove products from the cart. You can increase or decrease the quantity of a product directly in the cart. You can also search for products by their title. 
+A school project where the goal was to build a nature themed webshop with TDD, React and TypeScript
+
+
+See the live app here -> https://goggleshop.herokuapp.com/
+
+## About the app 😎
+Jokkes goggle shop is a fictional webshop that sells skigoggles. On the site you can browse the products and search for them by title and add products to the cart. You can remove products from the cart and also increase or decrease the quantity of a product directly in the cart.  
 
 This website also has a static user to simulate the feel of a real webshop site where you often have to login to be able to make a purchase.
 
@@ -33,6 +39,17 @@ This website also has a static user to simulate the feel of a real webshop site 
 12. When logged in as admin I want to be able to remove products I don't want to sell anymore
 
 13. When logged in as admin I want to be able to edit products
+
+## Technologies👩‍💻
+- HTML
+- CSS
+- React
+- TypeSCript
+- react-testing-library
+
+## Icons and images👩‍🎨
+All icons are from -> https://www.flaticon.com/
+All photos are from -> https://unsplash.com/
 
 ## Available Scripts
 
