@@ -48,8 +48,8 @@ This website also has a static user to simulate the feel of a real webshop site 
 - react-testing-library
 
 ## Icons and images👩‍🎨
-All icons are from -> https://www.flaticon.com/
-All photos are from -> https://unsplash.com/
+- All icons are from -> https://www.flaticon.com/
+- All photos are from -> https://unsplash.com/
 
 ## Available Scripts
 
